@@ -4,8 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
 
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.DataSource;
@@ -17,17 +15,10 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Func0;
 
-import static com.framgia.beemusic.data.model.Song.IS_NON_FAVORITE;
-import static com.framgia.beemusic.data.model.Song.TYPE_MEDIA;
-
 /**
  * Created by beepi on 17/02/2017.
  */
 public class SongLocalDataSource extends DataHelper implements DataSource<Song> {
-    private static String[] genresProjection = {
-        MediaStore.Audio.Genres.NAME,
-        MediaStore.Audio.Genres._ID
-    };
     private static SongLocalDataSource sSongLocalDataSource;
     private ContentResolver mContentResolver;
 
@@ -49,10 +40,7 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
         try {
             openDatabase();
             songs = null;
-            String sortOrder = SongSourceContract.SongEntry.COLUMN_NAME + " ASC";
-            Cursor cursor =
-                mDatabase.query(SongSourceContract.SongEntry.TABLE_SONG_NAME, null, selection, args,
-                    null, null, sortOrder);
+            Cursor cursor = getCursor(selection, args);
             if (cursor != null && cursor.moveToFirst()) {
                 songs = new ArrayList<>();
                 do {
@@ -66,6 +54,13 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
             closeDatabse();
         }
         return songs;
+    }
+
+    @Override
+    public Cursor getCursor(String selection, String[] args) {
+        String sortOrder = SongSourceContract.SongEntry.COLUMN_NAME + " ASC";
+        return mDatabase.query(SongSourceContract.SongEntry.TABLE_SONG_NAME, null, selection, args,
+            null, null, sortOrder);
     }
 
     @Override
@@ -133,23 +128,7 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
     }
 
     @Override
-    public Song getDataFromMediaStore(Cursor cursor) {
-        String nameSong, linkSong, genre;
-        int duration = 0, idSong;
-        if (cursor == null) return null;
-        idSong = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-        nameSong = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media
-            .TITLE));
-        duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media
-            .DURATION));
-        linkSong = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media
-            .DATA));
-        genre = getGenreFromMediaStore(idSong);
-        return new Song(nameSong, linkSong, IS_NON_FAVORITE, TYPE_MEDIA, genre, duration);
-    }
-
-    @Override
-    public Observable<Song> getDataObservable(final List<Song> models) {
+    public Observable<Song> getDataObservableByModels(final List<Song> models) {
         return Observable.defer(new Func0<Observable<Song>>() {
             @Override
             public Observable<Song> call() {
@@ -173,23 +152,11 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
         contentValues.put(SongSourceContract.SongEntry.COLUMN_TYPE, song.getType());
         contentValues.put(SongSourceContract.SongEntry.COLUMN_GENRE, song.getGenre());
         contentValues.put(SongSourceContract.SongEntry.COLUMN_DURATION, song.getDuration());
+        contentValues.put(SongSourceContract.SongEntry.COLUMN_ID_ALBUM, song.getIdAlbum());
+        contentValues.put(SongSourceContract.SongEntry.COLUMN_ID_SINGER, song.getIdSinger());
         if (song.getId() > -1) {
             contentValues.put(SongSourceContract.SongEntry.COLUMN_ID_SONG, song.getId());
         }
         return contentValues;
-    }
-
-    private String getGenreFromMediaStore(int idSong) {
-        if (idSong < 0) return null;
-        String genre = null;
-        Uri uri = MediaStore.Audio.Genres.getContentUriForAudioId("external", idSong);
-        Cursor genreCursor = mContentResolver.query(uri, genresProjection, null, null, null);
-        if (genreCursor != null && genreCursor.getCount() != 0) {
-            while (genreCursor.moveToNext()) {
-                genre = genreCursor.getString(genreCursor.getColumnIndexOrThrow(MediaStore.Audio
-                    .Genres.NAME));
-            }
-        }
-        return genre;
     }
 }

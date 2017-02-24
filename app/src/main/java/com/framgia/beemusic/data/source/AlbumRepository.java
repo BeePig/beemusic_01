@@ -35,6 +35,11 @@ public class AlbumRepository implements DataSource<Album> {
     }
 
     @Override
+    public Cursor getCursor(String selection, String[] args) {
+        return mLocalHandler.getCursor(selection, args);
+    }
+
+    @Override
     public int save(Album model) {
         int idAlbum = checkExistAlbum(model.getName());
         if (idAlbum != -1) {
@@ -60,13 +65,8 @@ public class AlbumRepository implements DataSource<Album> {
     }
 
     @Override
-    public Album getDataFromMediaStore(Cursor cursor) {
-        return mLocalHandler.getDataFromMediaStore(cursor);
-    }
-
-    @Override
-    public Observable<Album> getDataObservable(List<Album> models) {
-        return mLocalHandler.getDataObservable(models);
+    public Observable<Album> getDataObservableByModels(List<Album> models) {
+        return mLocalHandler.getDataObservableByModels(models);
     }
 
     /**
@@ -82,7 +82,7 @@ public class AlbumRepository implements DataSource<Album> {
         return albums.get(0).getId();
     }
 
-    private int getCountSong(int id) {
+    public int getCountSong(int id) {
         String selection = AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM + " = ?";
         List<Album> albums = getModel(selection, new String[]{String.valueOf(id)});
         if (albums == null) return -1;

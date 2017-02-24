@@ -3,7 +3,6 @@ package com.framgia.beemusic.data.source.local.album;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.MediaStore;
 
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.data.source.DataSource;
@@ -38,11 +37,7 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
         try {
             openDatabase();
             albums = null;
-            String sortOrder = AlbumSourceContract.AlbumEntry.COLUMN_NAME + " ASC";
-            Cursor cursor =
-                mDatabase
-                    .query(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME, null, selection, args,
-                        null, null, sortOrder);
+            Cursor cursor = getCursor(selection, args);
             if (cursor != null && cursor.moveToFirst()) {
                 albums = new ArrayList<>();
                 do {
@@ -56,6 +51,14 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
             closeDatabse();
         }
         return albums;
+    }
+
+    @Override
+    public Cursor getCursor(String selection, String[] args) {
+        String sortOrder = AlbumSourceContract.AlbumEntry.COLUMN_NAME + " ASC";
+        return mDatabase
+            .query(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME, null, selection, args,
+                null, null, sortOrder);
     }
 
     @Override
@@ -123,15 +126,7 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
     }
 
     @Override
-    public Album getDataFromMediaStore(Cursor cursor) {
-        if (cursor == null) return null;
-        String nameALbum = cursor.getString(cursor.getColumnIndexOrThrow(
-            MediaStore.Audio.Media.ALBUM));
-        return new Album(nameALbum, null, 0);
-    }
-
-    @Override
-    public Observable<Album> getDataObservable(final List<Album> models) {
+    public Observable<Album> getDataObservableByModels(final List<Album> models) {
         return Observable.defer(new Func0<Observable<Album>>() {
             @Override
             public Observable<Album> call() {

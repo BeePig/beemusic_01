@@ -11,7 +11,6 @@ import static com.framgia.beemusic.data.source.local.album.AlbumSourceContract.A
 import static com.framgia.beemusic.data.source.local.album.AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME;
 import static com.framgia.beemusic.data.source.local.singer.SingerSourceContract.SingerEntry.COLUMN_ID_SINGER;
 import static com.framgia.beemusic.data.source.local.singer.SingerSourceContract.SingerEntry.TABLE_SINGER_NAME;
-import static com.framgia.beemusic.data.source.local.singersong.SongSingerSourceContract.SongSingerEntry.TABLE_SONG_SINGER_RELATIONSHIP_NAME;
 import static com.framgia.beemusic.data.source.local.song.SongSourceContract.SongEntry.COLUMN_DURATION;
 import static com.framgia.beemusic.data.source.local.song.SongSourceContract.SongEntry.COLUMN_GENRE;
 import static com.framgia.beemusic.data.source.local.song.SongSourceContract.SongEntry.COLUMN_ID_SONG;
@@ -19,7 +18,6 @@ import static com.framgia.beemusic.data.source.local.song.SongSourceContract.Son
 import static com.framgia.beemusic.data.source.local.song.SongSourceContract.SongEntry.COLUMN_LINK;
 import static com.framgia.beemusic.data.source.local.song.SongSourceContract.SongEntry.COLUMN_TYPE;
 import static com.framgia.beemusic.data.source.local.song.SongSourceContract.SongEntry.TABLE_SONG_NAME;
-import static com.framgia.beemusic.data.source.local.songalbum.SongAlbumSourceContract.SongAlbumEntry.TABLE_SONG_ALBUM_RELATIONSHIP_NAME;
 
 /**
  * Created by beepi on 21/03/2016.
@@ -37,7 +35,9 @@ public class DataHelper extends SQLiteOpenHelper {
     private static final String DROPTABLE_IF_EXIST = "DROP TABLE IF EXISTS ";
     private static final String COMMA_CREATE_SONG_TABLE =
         COMMA_CREATE_TABLE + TABLE_SONG_NAME + " ("
-            + COLUMN_ID_SONG + INTERGER_TYPE + PRIMARY_KEY + AUTO_CREMENT + COMMA_SEP
+            + COLUMN_ID_SONG + INTERGER_TYPE + PRIMARY_KEY + COMMA_SEP
+            + COLUMN_ID_ALBUM + INTERGER_TYPE + PRIMARY_KEY + COMMA_SEP
+            + COLUMN_ID_SINGER + INTERGER_TYPE + PRIMARY_KEY + COMMA_SEP
             + COLUMN_NAME + TEXT_TYPE + COMMA_SEP
             + COLUMN_LINK + TEXT_TYPE + COMMA_SEP
             + COLUMN_TYPE + INTERGER_TYPE + COMMA_SEP
@@ -55,24 +55,12 @@ public class DataHelper extends SQLiteOpenHelper {
             + COLUMN_ID_SINGER + INTERGER_TYPE + PRIMARY_KEY + AUTO_CREMENT + COMMA_SEP
             + COLUMN_COUNT + INTERGER_TYPE + COMMA_SEP
             + COLUMN_NAME + TEXT_TYPE + " )";
-    private static final String COMMA_CREATE_TEMP_SONG_ALBUM_TABLE =
-        COMMA_CREATE_TABLE + TABLE_SONG_ALBUM_RELATIONSHIP_NAME + " ("
-            + COLUMN_ID_SONG + INTERGER_TYPE + PRIMARY_KEY + COMMA_SEP
-            + COLUMN_ID_ALBUM + INTERGER_TYPE + PRIMARY_KEY + " )";
-    private static final String COMMA_CREATE_TEMP_SINGER_SONG_TABLE =
-        COMMA_CREATE_TABLE + TABLE_SONG_SINGER_RELATIONSHIP_NAME + " ("
-            + COLUMN_ID_SINGER + INTERGER_TYPE + PRIMARY_KEY + COMMA_SEP
-            + COLUMN_ID_SONG + INTERGER_TYPE + PRIMARY_KEY + " )";
     private static final String COMMA_DROP_SONG_TABLE =
         DROPTABLE_IF_EXIST + TABLE_SONG_NAME;
     private static final String COMMA_DROP_ALBUM_TABLE =
         DROPTABLE_IF_EXIST + TABLE_ALBUM_NAME;
     private static final String COMMA_DROP_SINGER_TABLE =
         DROPTABLE_IF_EXIST + TABLE_SINGER_NAME;
-    private static final String COMMA_DROP_TEMP_SONG_ALBUM_TABLE =
-        DROPTABLE_IF_EXIST + TABLE_SONG_ALBUM_RELATIONSHIP_NAME;
-    private static final String COMMA_DROP_TEMP_SINGER_SONG_TABLE =
-        DROPTABLE_IF_EXIST + TABLE_SONG_SINGER_RELATIONSHIP_NAME;
 
     public DataHelper(Context context) {
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
@@ -83,8 +71,6 @@ public class DataHelper extends SQLiteOpenHelper {
         db.execSQL(COMMA_CREATE_ALBUM_TABLE);
         db.execSQL(COMMA_CREATE_SINGER_TABLE);
         db.execSQL(COMMA_CREATE_SONG_TABLE);
-        db.execSQL(COMMA_CREATE_TEMP_SONG_ALBUM_TABLE);
-        db.execSQL(COMMA_CREATE_TEMP_SINGER_SONG_TABLE);
     }
 
     @Override
@@ -92,8 +78,6 @@ public class DataHelper extends SQLiteOpenHelper {
         db.execSQL(COMMA_DROP_ALBUM_TABLE);
         db.execSQL(COMMA_DROP_SONG_TABLE);
         db.execSQL(COMMA_DROP_SINGER_TABLE);
-        db.execSQL(COMMA_DROP_TEMP_SONG_ALBUM_TABLE);
-        db.execSQL(COMMA_DROP_TEMP_SINGER_SONG_TABLE);
         onCreate(db);
     }
 

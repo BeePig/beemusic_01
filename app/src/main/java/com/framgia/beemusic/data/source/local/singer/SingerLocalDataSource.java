@@ -3,7 +3,6 @@ package com.framgia.beemusic.data.source.local.singer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.MediaStore;
 
 import com.framgia.beemusic.data.model.Singer;
 import com.framgia.beemusic.data.source.DataSource;
@@ -36,14 +35,9 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
     public List<Singer> getModel(String selection, String[] args) {
         List<Singer> singers = null;
         try {
+            Cursor cursor = getCursor(selection, args);
             openDatabase();
             singers = null;
-            String sortOrder = SingerSourceContract.SingerEntry.COLUMN_NAME + " ASC";
-            Cursor cursor =
-                mDatabase
-                    .query(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME, null, selection,
-                        args,
-                        null, null, sortOrder);
             if (cursor != null && cursor.moveToFirst()) {
                 singers = new ArrayList<>();
                 do {
@@ -57,6 +51,15 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
             closeDatabse();
         }
         return singers;
+    }
+
+    @Override
+    public Cursor getCursor(String selection, String[] args) {
+        String sortOrder = SingerSourceContract.SingerEntry.COLUMN_NAME + " ASC";
+        return mDatabase
+            .query(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME, null, selection,
+                args,
+                null, null, sortOrder);
     }
 
     @Override
@@ -124,15 +127,7 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
     }
 
     @Override
-    public Singer getDataFromMediaStore(Cursor cursor) {
-        if (cursor == null) return null;
-        String nameSinger = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media
-            .ARTIST));
-        return new Singer(nameSinger, 0);
-    }
-
-    @Override
-    public Observable<Singer> getDataObservable(final List<Singer> mediaCursor) {
+    public Observable<Singer> getDataObservableByModels(final List<Singer> mediaCursor) {
         return Observable.defer(new Func0<Observable<Singer>>() {
             @Override
             public Observable<Singer> call() {

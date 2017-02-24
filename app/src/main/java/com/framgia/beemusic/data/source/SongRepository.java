@@ -1,9 +1,7 @@
 package com.framgia.beemusic.data.source;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.MediaStore;
 
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.local.song.SongLocalDataSource;
@@ -18,16 +16,14 @@ import rx.Observable;
 public class SongRepository implements DataSource<Song> {
     private static SongRepository mSongRepository;
     private DataSource<Song> mLocalHandler;
-    private ContentResolver mContentResolver;
 
-    private SongRepository(DataSource<Song> localHandler, Context context) {
+    private SongRepository(DataSource<Song> localHandler) {
         mLocalHandler = localHandler;
-        mContentResolver = context.getContentResolver();
     }
 
     public static SongRepository getInstant(Context context) {
         if (mSongRepository == null) {
-            mSongRepository = new SongRepository(SongLocalDataSource.getInstant(context), context);
+            mSongRepository = new SongRepository(SongLocalDataSource.getInstant(context));
         }
         return mSongRepository;
     }
@@ -35,6 +31,11 @@ public class SongRepository implements DataSource<Song> {
     @Override
     public List<Song> getModel(String selection, String[] args) {
         return mLocalHandler.getModel(selection, args);
+    }
+
+    @Override
+    public Cursor getCursor(String selection, String[] args) {
+        return mLocalHandler.getCursor(selection, args);
     }
 
     @Override
@@ -58,19 +59,7 @@ public class SongRepository implements DataSource<Song> {
     }
 
     @Override
-    public Song getDataFromMediaStore(Cursor cursor) {
-        return mLocalHandler.getDataFromMediaStore(cursor);
-    }
-
-    @Override
-    public Observable<Song> getDataObservable(List<Song> models) {
-        return mLocalHandler.getDataObservable(models);
-    }
-
-    public Cursor getCursorFromMediaStore() {
-        String sortOrder = MediaStore.Audio.Media._ID;
-        Cursor cursor = mContentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
-            MediaStore.Audio.Media.IS_MUSIC + " = ?", new String[]{"1"}, sortOrder);
-        return cursor;
+    public Observable<Song> getDataObservableByModels(List<Song> models) {
+        return mLocalHandler.getDataObservableByModels(models);
     }
 }

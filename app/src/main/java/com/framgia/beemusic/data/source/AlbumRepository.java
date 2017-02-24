@@ -1,10 +1,9 @@
 package com.framgia.beemusic.data.source;
 
 import android.content.Context;
-import android.database.Cursor;
 
 import com.framgia.beemusic.data.model.Album;
-import com.framgia.beemusic.data.source.local.album.AlbumLocalHandler;
+import com.framgia.beemusic.data.source.local.album.AlbumLocalDataSource;
 import com.framgia.beemusic.data.source.local.album.AlbumSourceContract;
 
 import java.util.List;
@@ -24,23 +23,19 @@ public class AlbumRepository implements DataSource<Album> {
 
     public static AlbumRepository getInstant(Context context) {
         if (sAlbumRepository == null) {
-            sAlbumRepository = new AlbumRepository(AlbumLocalHandler.getInstant(context));
+            sAlbumRepository = new AlbumRepository(AlbumLocalDataSource.getInstant(context));
         }
         return sAlbumRepository;
     }
 
     @Override
-    public List<Album> getModel(String selection, String[] Args) {
-        return mLocalHandler.getModel(selection, Args);
+    public List<Album> getModel(String selection, String[] args) {
+        return mLocalHandler.getModel(selection, args);
     }
 
     @Override
     public int save(Album model) {
-        int idAlbum = checkExistAlbum(model.getName());
-        if (idAlbum != -1) {
-            model.setId(idAlbum);
-            update(model);
-        }
+        if (checkExistModel(model.getId())) update(model);
         return mLocalHandler.save(model);
     }
 
@@ -60,31 +55,13 @@ public class AlbumRepository implements DataSource<Album> {
     }
 
     @Override
-    public void implementCallback(Callback<Album> callback, List<Album> models) {
-        mLocalHandler.implementCallback(callback, models);
+    public boolean checkExistModel(int id) {
+        return mLocalHandler.checkExistModel(id);
     }
 
     @Override
-    public Album getDataFromMediaStore(Cursor cursor) {
-        return mLocalHandler.getDataFromMediaStore(cursor);
-    }
-
-    @Override
-    public Observable<Cursor> getDataObservable(Cursor mediaCursor) {
-        return mLocalHandler.getDataObservable(mediaCursor);
-    }
-
-    /**
-     * check exist of album
-     *
-     * @param name: album 's name
-     * @return id of album
-     */
-    private int checkExistAlbum(String name) {
-        String selection = AlbumSourceContract.AlbumEntry.COLUMN_NAME + " = ?";
-        List<Album> albums = getModel(selection, new String[]{name});
-        if (albums == null) return -1;
-        return albums.get(0).getId();
+    public Observable<Album> getDataObservable(List<Album> models) {
+        return mLocalHandler.getDataObservable(models);
     }
 
     private int getCountSong(int id) {

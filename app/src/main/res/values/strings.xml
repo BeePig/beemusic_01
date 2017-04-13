@@ -20,4 +20,11 @@
     <string name="action_remove">remove</string>
     <string name="title_delete_album">Delete this album</string>
     <string name="title_done">done</string>
+    <string name="title_new_album">Album: </string>
+    <string name="title_songs">Songs: </string>
+    <string name="action_update_image">image</string>
+    <string name="title_create_album">Create Album</string>
+    <string name="title_select_image">Select Picture</string>
+    <string name="error_not_pick_image">Sorry, you did not choose an image or an error
+        accured</string>
 </resources>

@@ -3,6 +3,7 @@ package com.framgia.beemusic.util;
 import android.app.SearchManager;
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.net.Uri;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -27,6 +28,8 @@ import com.framgia.beemusic.album.createalbum.CreatedAlbumActivity;
 import com.framgia.beemusic.displaysong.DisplaySongActivity;
 import com.framgia.beemusic.main.MainActivity;
 import com.framgia.beemusic.util.draganddrop.DragAndDrop;
+
+import java.io.File;
 
 /**
  * Created by beepi on 27/02/2017.
@@ -156,5 +159,13 @@ public class BindingAdapterUtil {
                 return true;
             }
         });
+    }
+
+    @BindingAdapter("path")
+    public static void updateUriImage(ImageView image, String pathImg) {
+        if (pathImg == null) return;
+        File file = new File(pathImg);
+        if (!file.exists()) return;
+        image.setImageURI(Uri.fromFile(file));
     }
 }

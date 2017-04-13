@@ -26,6 +26,9 @@ public class Album {
         mCount = count;
     }
 
+    public Album() {
+    }
+
     public Album(Cursor cursor) {
         mId = cursor.getInt(cursor.getColumnIndex(AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM));
         mName = cursor.getString(cursor.getColumnIndex(AlbumSourceContract.AlbumEntry.COLUMN_NAME));

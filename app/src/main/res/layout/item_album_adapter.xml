@@ -1,0 +1,75 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="listener"
+            type="com.framgia.beemusic.util.draganddrop.DragAndDrop.OnDragListener"/>
+
+        <variable
+            name="holder"
+            type="com.framgia.beemusic.album.AlbumAdapter.AlbumViewHolder"/>
+
+        <variable
+            name="presenter"
+            type="com.framgia.beemusic.album.AlbumContract.Presenter"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        app:cardElevation="@dimen/dp_5">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_contain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/dp_7"
+            android:gravity="center"
+            android:onClick="@{()->presenter.onOpenSongDetail(holder)}"
+            android:orientation="vertical"
+            bind:holder="@{holder}"
+            bind:touchListener="@{listener}">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_150"
+                android:alpha="@{holder.isTransparent? holder.TRANSPARENT : holder.NOT_TRANSPARENT}"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_ava"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:alpha="@{holder.isTransparent? holder.TRANSPARENT : holder.NOT_TRANSPARENT}"
+                android:background="@color/color_transparent"
+                android:gravity="center"
+                android:lines="2"
+                android:text="@{holder.album.name}"
+                android:textColor="@color/color_white"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/image_delete"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="right"
+            android:background="@drawable/bg_circle_shape"
+            android:onClick="@{()->presenter.onShowDialog(holder.album,holder.pos)}"
+            android:padding="@dimen/dp_10"
+            android:src="@drawable/ic_cross"
+            android:visibility="@{holder.isTransparent?View.VISIBLE:View.GONE}"/>
+    </android.support.v7.widget.CardView>
+</layout>

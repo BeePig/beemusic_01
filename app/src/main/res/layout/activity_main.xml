@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="baseActivity"
+            type="com.framgia.beemusic.bottombar.BaseActivity"/>
+
+        <variable
+            name="mainActivity"
+            type="com.framgia.beemusic.main.MainActivity"/>
+
+        <variable
+            name="bottomModel"
+            type="com.framgia.beemusic.bottombar.BaseActivity.BindBottomModel"/>
+
+    </data>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/ActionBarToggle"
+        bind:activity="@{mainActivity}"
+        bind:toolbar="@{toolBar}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tool_bar"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_green_600"
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/SearchView"
+                bind:activity="@{mainActivity}"
+                bind:color="@{@color/color_white}"
+                bind:title="@{@string/app_name}"/>
+
+            <LinearLayout
+                android:id="@+id/linear_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"/>
+
+            <include
+                layout="@layout/bottom_bar"
+                bind:activity="@{baseActivity}"
+                bind:model="@{bottomModel}"/>
+        </LinearLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/color_grey_100"
+            app:headerLayout="@layout/navigation_header_main"
+            app:itemTextColor="@color/color_black"
+            app:menu="@menu/navigation_main"/>
+    </android.support.v4.widget.DrawerLayout>
+</layout>
+

@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface AlbumDataSource extends DataSource<Album> {
     void updateCountForDelSong(List<Integer> idAlbums);
+    String getFilePickedImageLocal(String uriIntent);
 }

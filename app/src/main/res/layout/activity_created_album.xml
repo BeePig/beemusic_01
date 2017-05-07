@@ -1,118 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:bind="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
+    >
 
     <data>
-
+        <import type="com.framgia.beemusic.util.LayoutManager"/>
         <variable
             name="activity"
-            type="com.framgia.beemusic.album.createalbum.CreatedAlbumActivity"/>
+            type="com.framgia.beemusic.album.createalbum.CreatedAlbumActivity"
+            />
+        <variable
+            name="adapter"
+            type="com.framgia.beemusic.album.createalbum.CreatedAlbumAdapter"
+            />
     </data>
-
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:background="@color/color_green_600"
+            android:minHeight="?attr/actionBarSize"
+            bind:activity="@{activity}"
+            bind:color="@{@color/color_white}"
+            bind:title="@{@string/title_create_album}"
+            style="@style/ActionBarToggle"
+            />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/tool_bar"
-                style="@style/ActionBarToggle"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_green_600"
-                android:minHeight="?attr/actionBarSize"
-                bind:activity="@{activity}"
-                bind:color="@{@color/color_white}"
-                bind:title="@{@string/title_create_album}"/>
-
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/dp_2"
+            app:cardCornerRadius="@dimen/dp_10"
+            >
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_100"
-                android:layout_margin="@dimen/dp_20"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_100"
+                    android:layout_margin="@dimen/dp_20"
+                    android:orientation="horizontal"
+                    >
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{()->activity.presenter.onOpenChooseBackground()}">
-
-                    <com.framgia.beemusic.util.circleimageview.CircleImageView
-                        android:id="@+id/circleImageView"
-                        android:layout_width="@dimen/dp_100"
-                        android:layout_height="@dimen/dp_100"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:alpha="@dimen/scale_0.6"
-                        android:src="@drawable/ic_ava"
-                        bind:path="@{activity.filePath}"/>
-
-                    <ImageView
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_camera"/>
-                </RelativeLayout>
+                        android:onClick="@{()->activity.presenter.onOpenChooseBackground()}"
+                        >
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                        <com.framgia.beemusic.util.circleimageview.CircleImageView
+                            android:id="@+id/circleImageView"
+                            android:layout_width="@dimen/dp_100"
+                            android:layout_height="@dimen/dp_100"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:alpha="@dimen/scale_0.6"
+                            android:src="@drawable/ic_ava"
+                            bind:path="@{activity.filePath}"
+                            />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
+                        <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="@string/title_new_album"
-                            android:textColor="@color/color_black"/>
-
-                        <EditText
-                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:lines="2"/>
-                    </LinearLayout>
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_camera"
+                            />
+                    </RelativeLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/dp_5"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        >
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="@string/title_songs"
-                            android:textColor="@color/color_black"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:text="1"
-                            android:textColor="@color/color_black"/>
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/title_new_album"
+                                android:textColor="@color/color_black"
+                                />
+
+                            <EditText
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:lines="2"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text="@string/title_songs"
+                                android:textColor="@color/color_black"
+                                />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="1"
+                                android:textColor="@color/color_black"
+                                />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
-        </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            bind:adapter="@{adapter}"
+            bind:layoutManager="@{LayoutManager.linear()}"
+            />
+    </LinearLayout>
 </layout>
 

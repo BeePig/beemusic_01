@@ -3,6 +3,8 @@ package com.framgia.beemusic.util;
 import android.app.SearchManager;
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,15 +22,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.R;
 import com.framgia.beemusic.album.AlbumAdapter;
 import com.framgia.beemusic.album.createalbum.CreatedAlbumActivity;
+import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.displaysong.DisplaySongActivity;
 import com.framgia.beemusic.main.MainActivity;
 import com.framgia.beemusic.util.draganddrop.DragAndDrop;
-
 import java.io.File;
 
 /**
@@ -37,20 +38,20 @@ import java.io.File;
 public class BindingAdapterUtil {
     private static int VERTICAL_ITEM_SPACE = 20;
 
-    @BindingAdapter({"toolbar", "activity"})
+    @BindingAdapter({ "toolbar", "activity" })
     public static void setUpDrawerListener(final DrawerLayout drawlayout, Toolbar toolbar,
-                                           final AppCompatActivity appCompatActivity) {
+            final AppCompatActivity appCompatActivity) {
         ActionBarDrawerToggle actionBarDrawerToggle =
-            new ActionBarDrawerToggle(appCompatActivity,
-                drawlayout, toolbar, R.string.msg_open_drawer, R.string.msg_close_drawer);
+                new ActionBarDrawerToggle(appCompatActivity, drawlayout, toolbar,
+                        R.string.msg_open_drawer, R.string.msg_close_drawer);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         drawlayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }
 
-    @BindingAdapter({"title", "color", "activity"})
+    @BindingAdapter({ "title", "color", "activity" })
     public static void setToolBar(Toolbar toolbar, String title, int color,
-                                  AppCompatActivity activity) {
+            AppCompatActivity activity) {
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(color);
         if (activity instanceof MainActivity) {
@@ -71,9 +72,8 @@ public class BindingAdapterUtil {
         MenuItem itemSearch = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) itemSearch.getActionView();
         SearchManager searchManager =
-            (SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(
-            searchManager.getSearchableInfo(activity.getComponentName()));
+                (SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
         ImageView searchIcon = (ImageView) searchView.findViewById(R.id.search_button);
         searchIcon.setImageResource(R.drawable.ic_action_search);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -93,7 +93,7 @@ public class BindingAdapterUtil {
 
     @BindingAdapter("layoutManager")
     public static void setLayoutManager(RecyclerView view,
-                                        LayoutManager.LayoutManagerFactory factory) {
+            LayoutManager.LayoutManagerFactory factory) {
         view.setLayoutManager(factory.create(view));
         view.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
     }
@@ -104,9 +104,9 @@ public class BindingAdapterUtil {
         view.setAdapter(adapter);
     }
 
-    @BindingAdapter({"title", "color", "stop"})
+    @BindingAdapter({ "title", "color", "stop" })
     public static void setPlaySongActionBar(Toolbar toolbar, String title, int color,
-                                            final DisplaySongActivity activity) {
+            final DisplaySongActivity activity) {
         toolbar.inflateMenu(R.menu.toolbar_display_song);
         toolbar.setTitle(title);
         toolbar.setTitleTextColor(color);
@@ -124,21 +124,20 @@ public class BindingAdapterUtil {
     @BindingAdapter("rotate")
     public static void setAnimation(ImageView imageView, int typeAnimation) {
         Animation animation =
-            AnimationUtils.loadAnimation(BeeApplication.getInstant(), typeAnimation);
+                AnimationUtils.loadAnimation(BeeApplication.getInstant(), typeAnimation);
         imageView.startAnimation(animation);
     }
 
     @BindingAdapter("listener")
     public static void onSeekBarChangeListener(SeekBar seekBar,
-                                               SeekBar.OnSeekBarChangeListener listener) {
+            SeekBar.OnSeekBarChangeListener listener) {
         if (listener == null) return;
         seekBar.setOnSeekBarChangeListener(listener);
     }
 
-    @BindingAdapter({"touchListener", "holder"})
+    @BindingAdapter({ "touchListener", "holder" })
     public static void setOnTouchListener(final View view,
-                                          final DragAndDrop.OnDragListener listener,
-                                          final AlbumAdapter.AlbumViewHolder holder) {
+            final DragAndDrop.OnDragListener listener, final AlbumAdapter.AlbumViewHolder holder) {
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -167,5 +166,14 @@ public class BindingAdapterUtil {
         File file = new File(pathImg);
         if (!file.exists()) return;
         image.setImageURI(Uri.fromFile(file));
+    }
+
+    @BindingAdapter("image")
+    public static void setImageAlbum(ImageView image, Album album) {
+        if (album == null || album.getImageLink() == null) return;
+        File imgFile = new File(album.getImageLink());
+        if (!imgFile.exists()) return;
+        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        image.setImageBitmap(myBitmap);
     }
 }

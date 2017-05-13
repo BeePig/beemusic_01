@@ -2,6 +2,7 @@ package com.framgia.beemusic.album.createalbum;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableField;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -99,14 +100,14 @@ public class CreatedAlbumAdapter extends RecyclerView.Adapter<CreatedAlbumAdapte
             private String mSinger;
             private CreatedAlbumContract.Presenter mBindPresenter;
             private int mPostion;
-            private boolean mIsCheck;
+            private ObservableField<Boolean> mIsCheck = new ObservableField<>();
 
             public BindingModel(Song song, String singer, CreatedAlbumContract.Presenter presenter,
                     boolean isCheck, int postion) {
                 mSong = song;
                 mSinger = singer;
                 mBindPresenter = presenter;
-                mIsCheck = isCheck;
+                mIsCheck.set(isCheck);
                 mPostion = postion;
             }
 
@@ -142,7 +143,7 @@ public class CreatedAlbumAdapter extends RecyclerView.Adapter<CreatedAlbumAdapte
                 mBindPresenter = bindPresenter;
             }
 
-            public boolean isCheck() {
+            public ObservableField<Boolean> getIsCheck() {
                 return mIsCheck;
             }
         }

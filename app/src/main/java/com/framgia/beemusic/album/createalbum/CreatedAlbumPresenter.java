@@ -18,6 +18,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by beepi on 13/04/2017.
  */
 public class CreatedAlbumPresenter implements CreatedAlbumContract.Presenter {
+    private static final String NAME_ALBUM_UNKNOWN = "Unknown";
     private CreatedAlbumContract.View mView;
     private AlbumDataSource mAlbumRepository;
     private Album mAlbum = new Album();
@@ -57,11 +58,15 @@ public class CreatedAlbumPresenter implements CreatedAlbumContract.Presenter {
     @Override
     public void onCheckBox(CreatedAlbumAdapter.ViewHolder.BindingModel model) {
         mView.onCheckBox(model.getSong());
-        if (!model.isCheck()) {
+        if (!model.getIsCheck().get()) {
             addSong(model);
+            mView.addSong();
+            model.getIsCheck().set(true);
             return;
         }
         removeSong(model);
+        model.getIsCheck().set(false);
+        mView.removeSong();
     }
 
     private void removeSong(CreatedAlbumAdapter.ViewHolder.BindingModel model) {
@@ -75,8 +80,14 @@ public class CreatedAlbumPresenter implements CreatedAlbumContract.Presenter {
     }
 
     @Override
-    public void onCompletedCreation() {
-
+    public void onCompletedCreation(String nameAlbum, int numberOfSong) {
+        mAlbum.setName(nameAlbum.equals("") ? NAME_ALBUM_UNKNOWN : nameAlbum);
+        mAlbum.setCount(numberOfSong);
+        int albumId = mAlbumRepository.save(mAlbum);
+        for (Song song : mSongs) {
+            mSongAlbumRepository.save(song.getId(), albumId);
+        }
+        mView.onCompletedCreation();
     }
 
     @Override

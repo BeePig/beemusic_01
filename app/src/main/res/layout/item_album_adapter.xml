@@ -1,6 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
+    >
 
     <data>
 
@@ -8,15 +9,18 @@
 
         <variable
             name="listener"
-            type="com.framgia.beemusic.util.draganddrop.DragAndDrop.OnDragListener"/>
+            type="com.framgia.beemusic.util.draganddrop.DragAndDrop.OnDragListener"
+            />
 
         <variable
             name="holder"
-            type="com.framgia.beemusic.album.AlbumAdapter.AlbumViewHolder"/>
+            type="com.framgia.beemusic.album.AlbumAdapter.AlbumViewHolder"
+            />
 
         <variable
             name="presenter"
-            type="com.framgia.beemusic.album.AlbumContract.Presenter"/>
+            type="com.framgia.beemusic.album.AlbumContract.Presenter"
+            />
     </data>
 
     <android.support.v7.widget.CardView
@@ -25,7 +29,8 @@
         android:layout_marginLeft="@dimen/dp_5"
         android:layout_marginRight="@dimen/dp_5"
         android:layout_marginTop="@dimen/dp_5"
-        app:cardElevation="@dimen/dp_5">
+        app:cardElevation="@dimen/dp_5"
+        >
 
         <RelativeLayout
             android:id="@+id/relative_layout_contain"
@@ -39,14 +44,18 @@
             android:onClick="@{()->presenter.onOpenSongDetail(holder)}"
             android:orientation="vertical"
             bind:holder="@{holder}"
-            bind:touchListener="@{listener}">
+            bind:touchListener="@{listener}"
+            >
 
             <ImageView
+                android:id="@+id/image_album"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_150"
                 android:alpha="@{holder.isTransparent? holder.TRANSPARENT : holder.NOT_TRANSPARENT}"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_ava"/>
+                android:src="@drawable/ic_ava"
+                bind:image="@{holder.album}"
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -58,7 +67,8 @@
                 android:lines="2"
                 android:text="@{holder.album.name}"
                 android:textColor="@color/color_white"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                />
         </RelativeLayout>
 
         <ImageView
@@ -67,9 +77,10 @@
             android:layout_height="@dimen/dp_30"
             android:layout_gravity="right"
             android:background="@drawable/bg_circle_shape"
-            android:onClick="@{()->presenter.onShowDialog(holder.album,holder.pos)}"
+            android:onClick="@{()->presenter.onShowDialog(holder)}"
             android:padding="@dimen/dp_10"
             android:src="@drawable/ic_cross"
-            android:visibility="@{holder.isTransparent?View.VISIBLE:View.GONE}"/>
+            android:visibility="@{holder.isTransparent?View.VISIBLE:View.GONE}"
+            />
     </android.support.v7.widget.CardView>
 </layout>

@@ -25,10 +25,12 @@ import rx.subscriptions.CompositeSubscription;
 public class CreatedAlbumActivity extends AppCompatActivity
         implements CreatedAlbumContract.View, SearchView.OnQueryTextListener {
     private final static int REQUEST_PICK_IMAGE = 1;
+    private final static String NUMBER_ZERO = "0";
     private ActivityCreatedAlbumBinding mBinding;
     private CreatedAlbumContract.Presenter mPresenter;
     private ObservableField<String> mFilePath = new ObservableField<>();
     private CreatedAlbumAdapter mAdapter;
+    private ObservableField<String> mNumberOfSong = new ObservableField<>(NUMBER_ZERO);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,8 @@ public class CreatedAlbumActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_done:
-                //todo create an album
+                mPresenter.onCompletedCreation(mBinding.editTextNameAlbum.getText().toString(),
+                        Integer.valueOf(mNumberOfSong.get()));
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -84,6 +87,23 @@ public class CreatedAlbumActivity extends AppCompatActivity
     @Override
     public void onCheckBox(Song song) {
         mAdapter.onChecked(song);
+    }
+
+    @Override
+    public void addSong() {
+        int value = Integer.valueOf(mNumberOfSong.get()) + 1;
+        mNumberOfSong.set(String.valueOf(value));
+    }
+
+    @Override
+    public void removeSong() {
+        int value = Integer.valueOf(mNumberOfSong.get()) - 1;
+        mNumberOfSong.set(String.valueOf(value));
+    }
+
+    @Override
+    public void onCompletedCreation() {
+        onBackPressed();
     }
 
     @Override
@@ -135,5 +155,9 @@ public class CreatedAlbumActivity extends AppCompatActivity
         if (mAdapter == null) return false;
         mAdapter.onSearch(newText);
         return true;
+    }
+
+    public ObservableField<String> getNumberOfSong() {
+        return mNumberOfSong;
     }
 }

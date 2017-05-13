@@ -28,8 +28,4 @@
     <string name="error_not_pick_image">Sorry, you did not choose an image or an error
         accured</string>
     <string name="title_all_song">All Songs</string>
-    <array name="title_section">
-        <item>All Songs</item>
-        <item>Suggestion</item>
-    </array>
 </resources>

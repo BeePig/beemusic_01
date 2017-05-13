@@ -14,6 +14,12 @@ public interface CreatedAlbumContract {
         void initRecycleview(List<Song> songs, List<String> singers);
 
         void onCheckBox(Song song);
+
+        void addSong();
+
+        void removeSong();
+
+        void onCompletedCreation();
     }
 
     interface Presenter extends BasePresenter {
@@ -23,6 +29,6 @@ public interface CreatedAlbumContract {
 
         void onCheckBox(CreatedAlbumAdapter.ViewHolder.BindingModel model);
 
-        void onCompletedCreation();
+        void onCompletedCreation(String nameAlbum, int numberOfSong);
     }
 }

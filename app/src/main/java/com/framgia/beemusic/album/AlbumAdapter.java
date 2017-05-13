@@ -4,12 +4,10 @@ import android.databinding.ObservableBoolean;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.databinding.ItemAlbumAdapterBinding;
 import com.framgia.beemusic.util.draganddrop.DragAndDrop;
 import com.framgia.beemusic.util.draganddrop.ItemTouchHelperAdapter;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -17,14 +15,14 @@ import java.util.List;
  * Created by beepi on 24/03/2017.
  */
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>
-    implements ItemTouchHelperAdapter {
+        implements ItemTouchHelperAdapter {
     private List<Album> mAlbums;
     private LayoutInflater mLayoutInflater;
     private AlbumContract.Presenter mPresenter;
     private DragAndDrop.OnDragListener mOnDragListener;
 
-    public AlbumAdapter(List<Album> albums, AlbumContract.Presenter presenter, DragAndDrop
-        .OnDragListener listener) {
+    public AlbumAdapter(List<Album> albums, AlbumContract.Presenter presenter,
+            DragAndDrop.OnDragListener listener) {
         mAlbums = albums;
         mPresenter = presenter;
         mOnDragListener = listener;
@@ -34,7 +32,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     public AlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mLayoutInflater == null) mLayoutInflater = LayoutInflater.from(parent.getContext());
         ItemAlbumAdapterBinding binding =
-            ItemAlbumAdapterBinding.inflate(mLayoutInflater, parent, false);
+                ItemAlbumAdapterBinding.inflate(mLayoutInflater, parent, false);
         return new AlbumAdapter.AlbumViewHolder(binding);
     }
 
@@ -50,6 +48,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < 0
+                || fromPosition >= mAlbums.size() && toPosition < 0
+                || toPosition >= mAlbums.size()) {
+            return false;
+        }
+
         Collections.swap(mAlbums, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         return true;
@@ -62,9 +66,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     public List<Album> getAlbums() {
         return mAlbums;
     }
-    
-    public void removeItem(int pos) {
-        mAlbums.remove(pos);
+
+    public void removeItem(Album album, int pos) {
+        if (album == null) return;
+        mAlbums.remove(album);
         notifyItemRemoved(pos);
     }
 
@@ -97,6 +102,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
         public int getPos() {
             return mPos;
+        }
+
+        public void setPos(int pos) {
+            mPos = pos;
         }
     }
 }

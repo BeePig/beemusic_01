@@ -15,8 +15,9 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
             android:layout_gravity="center"
+            android:checked="@{model.isCheck}"
+            android:onClick="@{()->model.bindPresenter.onCheckBox(model)}"
             />
         <LinearLayout
             android:layout_width="0dp"

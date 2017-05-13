@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.framgia.beemusic"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.framgia.beemusic">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -35,7 +35,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity android:name=".bottombar.BaseActivity"/>
-        <activity android:name=".album.createalbum.CreatedAlbumActivity"/>
+        <activity android:name=".album.createalbum.CreatedAlbumActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

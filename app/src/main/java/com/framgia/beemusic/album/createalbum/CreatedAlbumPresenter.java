@@ -1,12 +1,13 @@
 package com.framgia.beemusic.album.createalbum;
 
-import android.databinding.ObservableArrayList;
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.AlbumDataSource;
 import com.framgia.beemusic.data.source.DataSourceRelationship;
 import com.framgia.beemusic.data.source.SingerDataSource;
 import com.framgia.beemusic.data.source.SongDataSource;
+import java.util.ArrayList;
+import java.util.List;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -25,6 +26,7 @@ public class CreatedAlbumPresenter implements CreatedAlbumContract.Presenter {
     private SingerDataSource mSingerRepository;
     private DataSourceRelationship mSongAlbumRepository;
     private DataSourceRelationship mSongSingerRepository;
+    private List<Song> mSongs = new ArrayList<>();
 
     public CreatedAlbumPresenter(CreatedAlbumContract.View view, AlbumDataSource albumRepository,
             CompositeSubscription compositeSubscription, SongDataSource songRepository,
@@ -53,6 +55,26 @@ public class CreatedAlbumPresenter implements CreatedAlbumContract.Presenter {
     }
 
     @Override
+    public void onCheckBox(CreatedAlbumAdapter.ViewHolder.BindingModel model) {
+        mView.onCheckBox(model.getSong());
+        if (!model.isCheck()) {
+            addSong(model);
+            return;
+        }
+        removeSong(model);
+    }
+
+    private void removeSong(CreatedAlbumAdapter.ViewHolder.BindingModel model) {
+        if (model.getSong() == null) return;
+        mSongs.remove(model.getSong());
+    }
+
+    private void addSong(CreatedAlbumAdapter.ViewHolder.BindingModel model) {
+        if (model.getSong() == null) return;
+        mSongs.add(model.getSong());
+    }
+
+    @Override
     public void onCompletedCreation() {
 
     }
@@ -60,8 +82,8 @@ public class CreatedAlbumPresenter implements CreatedAlbumContract.Presenter {
     @Override
     public void subcribe() {
         mSubscription.clear();
-        final ObservableArrayList<Song> songs = new ObservableArrayList<>();
-        final ObservableArrayList<String> singers = new ObservableArrayList<>();
+        final List<Song> songs = new ArrayList<>();
+        final List<String> singers = new ArrayList<>();
         Subscription subscription =
                 mSongRepository.getDataObservableByModels(mSongRepository.getModel(null, null))
                         .subscribeOn(Schedulers.io())

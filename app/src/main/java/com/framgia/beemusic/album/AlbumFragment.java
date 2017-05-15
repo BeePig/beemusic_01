@@ -60,7 +60,6 @@ public class AlbumFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
     public void setPresenter(AlbumContract.Presenter presenter) {
         mPresenter = presenter;
     }

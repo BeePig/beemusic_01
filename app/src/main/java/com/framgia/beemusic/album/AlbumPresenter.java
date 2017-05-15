@@ -6,8 +6,6 @@ import com.framgia.beemusic.data.model.Singer;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.AlbumDataSource;
 import com.framgia.beemusic.data.source.DataSourceRelationship;
-import com.framgia.beemusic.data.source.SingerDataSource;
-import com.framgia.beemusic.data.source.SongDataSource;
 import com.framgia.beemusic.data.source.local.album.AlbumSourceContract;
 import com.framgia.beemusic.data.source.local.songalbum.SongAlbumSourceContract;
 import java.util.ArrayList;
@@ -23,22 +21,15 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class AlbumPresenter implements AlbumContract.Presenter {
     private AlbumContract.View mView;
-    private SongDataSource mSongHandler;
     private AlbumDataSource mAlbumHandler;
-    private SingerDataSource mSingerHandler;
     private DataSourceRelationship mSongAlbumHandler;
-    private DataSourceRelationship mSongSingerHandler;
     private CompositeSubscription mSubscription;
 
-    public AlbumPresenter(@NonNull AlbumContract.View view, SongDataSource songHandler,
-            AlbumDataSource albumHandler, SingerDataSource singerHandler,
-            DataSourceRelationship songAlbumHandler, DataSourceRelationship songSingerHandler) {
+    public AlbumPresenter(@NonNull AlbumContract.View view, AlbumDataSource albumHandler,
+            DataSourceRelationship songAlbumHandler) {
         mView = view;
-        mSongHandler = songHandler;
         mAlbumHandler = albumHandler;
-        mSingerHandler = singerHandler;
         mSongAlbumHandler = songAlbumHandler;
-        mSongSingerHandler = songSingerHandler;
         mView.setPresenter(this);
         mSubscription = new CompositeSubscription();
     }

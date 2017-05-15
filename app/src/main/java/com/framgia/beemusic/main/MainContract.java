@@ -8,8 +8,13 @@ import com.framgia.beemusic.BasePresenter;
 public interface MainContract {
     interface View {
         void startObserverService();
+
         void initSongFragment();
+
         void initAlbumFragment();
+
+        void initFavoriteAlbumFragment();
+
         void onSearch(String keySearch);
     }
 

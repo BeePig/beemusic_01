@@ -44,7 +44,6 @@ public class SongFragment extends Fragment implements SongContract.View {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
     public void setPresenter(SongContract.Presenter presenter) {
         mPresenter = presenter;
     }

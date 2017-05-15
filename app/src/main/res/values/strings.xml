@@ -11,6 +11,7 @@
     <string name="title_album">Album</string>
     <string name="title_singer">Singer</string>
     <string name="title_favorite">Favorite</string>
+    <string name="title_favorite_album">Favorite Album</string>
     <string name="title_feedback">FeedBack</string>
     <string name="title_song_local">Local Song</string>
     <string name="msg_open_drawer">open</string>
@@ -28,4 +29,7 @@
     <string name="error_not_pick_image">Sorry, you did not choose an image or an error
         accured</string>
     <string name="title_all_song">All Songs</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

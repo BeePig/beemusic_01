@@ -16,7 +16,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
-
 import com.framgia.beemusic.BaseFragmentView;
 import com.framgia.beemusic.R;
 import com.framgia.beemusic.album.AlbumFragment;
@@ -29,11 +28,12 @@ import com.framgia.beemusic.data.source.SongRepository;
 import com.framgia.beemusic.data.source.SongSingerRepository;
 import com.framgia.beemusic.data.source.SynchronizeRepository;
 import com.framgia.beemusic.databinding.ActivityMainBinding;
+import com.framgia.beemusic.favorite.FavoriteAlbumFragment;
+import com.framgia.beemusic.favorite.FavoriteAlbumPresenter;
 import com.framgia.beemusic.service.ObservableService;
 import com.framgia.beemusic.song.SongFragment;
 import com.framgia.beemusic.song.SongPresenter;
 import com.framgia.beemusic.util.ActivityUtils;
-
 import rx.subscriptions.CompositeSubscription;
 
 import static com.framgia.beemusic.util.Constant.CONTENT_EMAIL;
@@ -41,12 +41,13 @@ import static com.framgia.beemusic.util.Constant.GMAIL;
 import static com.framgia.beemusic.util.Constant.SUBJECT_EMAIL;
 
 public class MainActivity extends BaseActivity
-    implements MainContract.View, NavigationView.OnNavigationItemSelectedListener {
+        implements MainContract.View, NavigationView.OnNavigationItemSelectedListener {
     private MainContract.Presenter mPresenter;
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 1;
     private ActivityMainBinding mBinding;
     private SongFragment mSongFragment;
     private AlbumFragment mAlbumFragment;
+    private FavoriteAlbumFragment mFavoriteAlbumFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +63,15 @@ public class MainActivity extends BaseActivity
     }
 
     private void checkAndRequestPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 showConfirmPermissionDialog();
             } else {
                 ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    WRITE_EXTERNAL_STORAGE_CODE);
+                        new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                        WRITE_EXTERNAL_STORAGE_CODE);
             }
             return;
         }
@@ -84,34 +84,30 @@ public class MainActivity extends BaseActivity
     }
 
     private void showConfirmPermissionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-            .setCancelable(true)
-            .setTitle(R.string.title_permission)
-            .setMessage(R.string.msg_external_storage_permision);
-        builder.setNegativeButton(android.R.string.yes,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    showNotLoadOnMediastore();
-                }
-            });
-        builder.setPositiveButton(android.R.string.no,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setCancelable(true)
+                .setTitle(R.string.title_permission)
+                .setMessage(R.string.msg_external_storage_permision);
+        builder.setNegativeButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showNotLoadOnMediastore();
+            }
+        });
+        builder.setPositiveButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                         WRITE_EXTERNAL_STORAGE_CODE);
-                }
-            });
+            }
+        });
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         if (requestCode == WRITE_EXTERNAL_STORAGE_CODE) {
-            if (grantResults.length > 0 &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (!ActivityUtils.isInstalled(this)) {
                     mPresenter.subcribe();
                 }
@@ -120,17 +116,13 @@ public class MainActivity extends BaseActivity
     }
 
     private void initPresenter() {
-        mPresenter = new MainPresenter(this,
-            new CompositeSubscription(),
-            SongRepository.getInstant(this),
-            AlbumRepository.getInstant(this),
-            SingerRepository.getInstant(this),
-            SynchronizeRepository.getInstant());
+        mPresenter = new MainPresenter(this, new CompositeSubscription(),
+                SongRepository.getInstant(this), AlbumRepository.getInstant(this),
+                SingerRepository.getInstant(this), SynchronizeRepository.getInstant());
     }
 
     private void showNotLoadOnMediastore() {
-        Toast.makeText(this, R.string.msg_not_load_mediastore, Toast.LENGTH_SHORT)
-            .show();
+        Toast.makeText(this, R.string.msg_not_load_mediastore, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -158,7 +150,7 @@ public class MainActivity extends BaseActivity
                 // todo open fragment singer
                 break;
             case R.id.item_favorite:
-                // todo open fragment favorite
+                initFavoriteAlbumFragment();
                 break;
             case R.id.item_feadback:
                 sendFeadback();
@@ -185,11 +177,11 @@ public class MainActivity extends BaseActivity
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.linear_content);
         if (fragment instanceof SongFragment) return;
         mSongFragment = SongFragment.newInstance();
-        ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(),
-            mSongFragment, R.id.linear_content);
+        ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(), mSongFragment,
+                R.id.linear_content);
         new SongPresenter(mSongFragment, SongRepository.getInstant(this),
-            AlbumRepository.getInstant(this), SingerRepository.getInstant(this),
-            SongAlbumRepository.getInstant(this), SongSingerRepository.getInstant(this));
+                AlbumRepository.getInstant(this), SingerRepository.getInstant(this),
+                SongAlbumRepository.getInstant(this), SongSingerRepository.getInstant(this));
     }
 
     @Override
@@ -197,11 +189,22 @@ public class MainActivity extends BaseActivity
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.linear_content);
         if (fragment instanceof AlbumFragment) return;
         mAlbumFragment = AlbumFragment.newInstance();
-        ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(),
-            mAlbumFragment, R.id.linear_content);
-        new AlbumPresenter(mAlbumFragment, SongRepository.getInstant(this),
-            AlbumRepository.getInstant(this), SingerRepository.getInstant(this),
-            SongAlbumRepository.getInstant(this), SongSingerRepository.getInstant(this));
+        ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(), mAlbumFragment,
+                R.id.linear_content);
+        new AlbumPresenter(mAlbumFragment, AlbumRepository.getInstant(this),
+                SongAlbumRepository.getInstant(this));
+    }
+
+    @Override
+    public void initFavoriteAlbumFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.linear_content);
+        if (fragment instanceof FavoriteAlbumFragment) return;
+        mFavoriteAlbumFragment = FavoriteAlbumFragment.newInstance();
+        ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(), mFavoriteAlbumFragment,
+                R.id.linear_content);
+        new FavoriteAlbumPresenter(mFavoriteAlbumFragment, AlbumRepository.getInstant(this),
+                SongAlbumRepository.getInstant(this), SongRepository.getInstant(this),
+                SongSingerRepository.getInstant(this), SingerRepository.getInstant(this));
     }
 
     @Override

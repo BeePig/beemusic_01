@@ -2,6 +2,7 @@ package com.framgia.beemusic.singer;
 
 import com.framgia.beemusic.data.model.Singer;
 import com.framgia.beemusic.data.source.SingerDataSource;
+import com.framgia.beemusic.data.source.local.singer.SingerSourceContract;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Subscriber;
@@ -59,6 +60,31 @@ public class SingerPresenter implements SingerContract.Presenter {
 
     @Override
     public void onSearch(String keySearch) {
+        mSubscription.clear();
+        final List<Singer> singers = new ArrayList<>();
+        String selection =
+                SingerSourceContract.SingerEntry.COLUMN_NAME + " like '%" + keySearch + "%'";
+        Subscription subscription = mSingerRepository.getDataObservableByModels(
+                mSingerRepository.getModel(selection, null))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Singer>() {
+                    @Override
+                    public void onCompleted() {
+                        mView.initRecycleview(singers);
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        mView.initRecycleview(singers);
+                    }
+
+                    @Override
+                    public void onNext(Singer singer) {
+                        singers.add(singer);
+                    }
+                });
+        mSubscription.add(subscription);
     }
 }

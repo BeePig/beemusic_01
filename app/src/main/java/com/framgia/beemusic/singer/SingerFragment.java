@@ -1,7 +1,6 @@
 package com.framgia.beemusic.singer;
 
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class SingerFragment extends Fragment implements SingerContract.View {
     private SingerContract.Presenter mPresenter;
-    private ObservableField<SingerAdapter> mAdapter = new ObservableField<>();
+    private SingerAdapter mAdapter;
     private FragmentSingerBinding mBinding;
 
     public SingerFragment() {
@@ -46,13 +45,14 @@ public class SingerFragment extends Fragment implements SingerContract.View {
 
     @Override
     public void onSearch(String keySearch) {
-
+        if (mPresenter == null) return;
+        mPresenter.onSearch(keySearch);
     }
 
     @Override
     public void initRecycleview(List<Singer> singers) {
-        mAdapter.set(new SingerAdapter(singers, mPresenter));
-        mBinding.setAdapter(mAdapter.get());
+        mAdapter = new SingerAdapter(singers, mPresenter);
+        mBinding.setAdapter(mAdapter);
     }
 
     @Override

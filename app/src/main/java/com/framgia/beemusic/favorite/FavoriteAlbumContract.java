@@ -1,9 +1,9 @@
 package com.framgia.beemusic.favorite;
 
-import android.databinding.ObservableArrayList;
 import com.framgia.beemusic.BaseFragmentPresenter;
 import com.framgia.beemusic.BaseFragmentView;
 import com.framgia.beemusic.data.model.Song;
+import java.util.List;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 /**
@@ -12,7 +12,7 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 
 public interface FavoriteAlbumContract {
     interface View extends BaseFragmentView<Presenter> {
-        void initRecycleview(ObservableArrayList<Song> songs, ObservableArrayList<String> singer);
+        void initRecycleview(List<Song> songs, List<String> singer);
 
         void notifyItemRemove(Song song, int pos);
 

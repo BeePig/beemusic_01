@@ -86,7 +86,7 @@ public class FavoriteAlbumPresenter implements FavoriteAlbumContract.Presenter {
                 + SongSourceContract.SongEntry.COLUMN_IS_FAVORITE
                 + " = ?";
         Subscription subscription = mSongRepository.getDataObservableByModels(
-                mSongRepository.getModel(selection, new String[] { "1" }))
+                mSongRepository.getModel(selection, new String[] { IS_FAVORITE }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<Song>() {

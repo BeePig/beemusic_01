@@ -31,6 +31,8 @@ import com.framgia.beemusic.databinding.ActivityMainBinding;
 import com.framgia.beemusic.favorite.FavoriteAlbumFragment;
 import com.framgia.beemusic.favorite.FavoriteAlbumPresenter;
 import com.framgia.beemusic.service.ObservableService;
+import com.framgia.beemusic.singer.SingerFragment;
+import com.framgia.beemusic.singer.SingerPresenter;
 import com.framgia.beemusic.song.SongFragment;
 import com.framgia.beemusic.song.SongPresenter;
 import com.framgia.beemusic.util.ActivityUtils;
@@ -48,6 +50,7 @@ public class MainActivity extends BaseActivity
     private SongFragment mSongFragment;
     private AlbumFragment mAlbumFragment;
     private FavoriteAlbumFragment mFavoriteAlbumFragment;
+    private SingerFragment mSingerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +150,7 @@ public class MainActivity extends BaseActivity
                 initAlbumFragment();
                 break;
             case R.id.item_singer:
-                // todo open fragment singer
+                initSingerFragment();
                 break;
             case R.id.item_favorite:
                 initFavoriteAlbumFragment();
@@ -204,6 +207,16 @@ public class MainActivity extends BaseActivity
                 R.id.linear_content);
         new FavoriteAlbumPresenter(mFavoriteAlbumFragment, SongRepository.getInstant(this),
                 SongSingerRepository.getInstant(this), SingerRepository.getInstant(this));
+    }
+
+    @Override
+    public void initSingerFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.linear_content);
+        if (fragment instanceof SingerFragment) return;
+        mSingerFragment = SingerFragment.newInstance();
+        ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(), mSingerFragment,
+                R.id.linear_content);
+        new SingerPresenter(mSingerFragment, SingerRepository.getInstant(this));
     }
 
     @Override

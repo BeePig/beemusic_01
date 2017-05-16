@@ -1,8 +1,12 @@
 package com.framgia.beemusic.favorite;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.databinding.ObservableArrayList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import com.framgia.beemusic.BR;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.databinding.ItemFavoriteAlbumAdapterBinding;
 import java.util.List;
@@ -12,12 +16,13 @@ import java.util.List;
  */
 
 public class FavoriteAlbumAdapter extends RecyclerView.Adapter<FavoriteAlbumAdapter.ViewHolder> {
-    private List<Song> mSongs;
-    private List<String> mSingers;
+    private ObservableArrayList<Song> mSongs;
+    private ObservableArrayList<String> mSingers;
     private LayoutInflater mLayoutInflater;
     private FavoriteAlbumContract.Presenter mFavoriteAlbumPresenter;
 
-    public FavoriteAlbumAdapter(List<Song> songs, List<String> singers,
+    public FavoriteAlbumAdapter(ObservableArrayList<Song> songs,
+            ObservableArrayList<String> singers,
             FavoriteAlbumContract.Presenter favoriteAlbumPresenter) {
         mSongs = songs;
         mSingers = singers;
@@ -34,7 +39,7 @@ public class FavoriteAlbumAdapter extends RecyclerView.Adapter<FavoriteAlbumAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(position);
+        holder.bind(position, holder);
     }
 
     @Override
@@ -58,21 +63,27 @@ public class FavoriteAlbumAdapter extends RecyclerView.Adapter<FavoriteAlbumAdap
             mBinding = binding;
         }
 
-        private void bind(int pos) {
+        private void bind(int pos, ViewHolder holder) {
             Song song = mSongs.get(pos);
             if (song == null) return;
-            mBinding.setModel(new BindingModel(song, mSingers.get(pos)));
+            mBinding.setModel(
+                    new BindingModel(song, mSingers.get(pos), mFavoriteAlbumPresenter, holder));
             mBinding.executePendingBindings();
         }
     }
 
-    public class BindingModel {
+    public class BindingModel extends BaseObservable {
         private Song mSong;
         private String mSinger;
+        private FavoriteAlbumContract.Presenter mBindPresenter;
+        private ViewHolder mHolder;
 
-        public BindingModel(Song song, String singer) {
+        public BindingModel(Song song, String singer, FavoriteAlbumContract.Presenter presenter,
+                ViewHolder holder) {
             mSong = song;
             mSinger = singer;
+            mBindPresenter = presenter;
+            mHolder = holder;
         }
 
         public Song getSong() {
@@ -81,6 +92,20 @@ public class FavoriteAlbumAdapter extends RecyclerView.Adapter<FavoriteAlbumAdap
 
         public String getSinger() {
             return mSinger;
+        }
+
+        public FavoriteAlbumContract.Presenter getBindPresenter() {
+            return mBindPresenter;
+        }
+
+        @Bindable
+        public ViewHolder getHolder() {
+            return mHolder;
+        }
+
+        public void setHolder(ViewHolder holder) {
+            mHolder = holder;
+            notifyPropertyChanged(BR.holder);
         }
     }
 }

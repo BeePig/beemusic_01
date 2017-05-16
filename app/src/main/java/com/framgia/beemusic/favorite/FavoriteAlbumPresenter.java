@@ -3,12 +3,13 @@ package com.framgia.beemusic.favorite;
 import android.databinding.ObservableArrayList;
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.data.model.Song;
-import com.framgia.beemusic.data.source.AlbumDataSource;
 import com.framgia.beemusic.data.source.DataSourceRelationship;
 import com.framgia.beemusic.data.source.SingerDataSource;
 import com.framgia.beemusic.data.source.SongDataSource;
 import com.framgia.beemusic.data.source.local.song.SongSourceContract;
 import com.framgia.beemusic.displaysong.DisplaySongActivity;
+import java.util.ArrayList;
+import java.util.List;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 import rx.Subscriber;
 import rx.Subscription;
@@ -22,19 +23,14 @@ import rx.subscriptions.CompositeSubscription;
 public class FavoriteAlbumPresenter implements FavoriteAlbumContract.Presenter {
     private static final String IS_FAVORITE = "1";
     private FavoriteAlbumContract.View mView;
-    private AlbumDataSource mAlbumRepository;
     private CompositeSubscription mSubscription;
-    private DataSourceRelationship mSongAlbumRepository;
     private SongDataSource mSongRepository;
     private DataSourceRelationship mSongSingerRepository;
     private SingerDataSource mSingerRepository;
 
-    public FavoriteAlbumPresenter(FavoriteAlbumContract.View view, AlbumDataSource albumRepository,
-            DataSourceRelationship songAlbumRepository, SongDataSource songRepository,
+    public FavoriteAlbumPresenter(FavoriteAlbumContract.View view, SongDataSource songRepository,
             DataSourceRelationship songSingerRepository, SingerDataSource singerRepository) {
         mView = view;
-        mAlbumRepository = albumRepository;
-        mSongAlbumRepository = songAlbumRepository;
         mSongRepository = songRepository;
         mSongSingerRepository = songSingerRepository;
         mSingerRepository = singerRepository;
@@ -80,7 +76,39 @@ public class FavoriteAlbumPresenter implements FavoriteAlbumContract.Presenter {
 
     @Override
     public void onSearch(String keySearch) {
+        final List<Song> songs = new ArrayList<>();
+        final List<String> singers = new ArrayList<>();
+        String selection = SongSourceContract.SongEntry.COLUMN_NAME
+                + " like '%"
+                + keySearch
+                + "%'"
+                + " and "
+                + SongSourceContract.SongEntry.COLUMN_IS_FAVORITE
+                + " = ?";
+        Subscription subscription = mSongRepository.getDataObservableByModels(
+                mSongRepository.getModel(selection, new String[] { "1" }))
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .subscribe(new Subscriber<Song>() {
+                    @Override
+                    public void onCompleted() {
+                        mView.initRecycleview(songs, singers);
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        mView.initRecycleview(songs, singers);
+                    }
+
+                    @Override
+                    public void onNext(Song song) {
+                        songs.add(song);
+                        singers.add(mSingerRepository.getSingerNameByIds(
+                                mSongSingerRepository.getListId(song.getId())));
+                    }
+                });
+        mSubscription.add(subscription);
     }
 
     @Override

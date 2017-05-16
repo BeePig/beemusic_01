@@ -202,8 +202,7 @@ public class MainActivity extends BaseActivity
         mFavoriteAlbumFragment = FavoriteAlbumFragment.newInstance();
         ActivityUtils.replaceFragmentToActivity(getSupportFragmentManager(), mFavoriteAlbumFragment,
                 R.id.linear_content);
-        new FavoriteAlbumPresenter(mFavoriteAlbumFragment, AlbumRepository.getInstant(this),
-                SongAlbumRepository.getInstant(this), SongRepository.getInstant(this),
+        new FavoriteAlbumPresenter(mFavoriteAlbumFragment, SongRepository.getInstant(this),
                 SongSingerRepository.getInstant(this), SingerRepository.getInstant(this));
     }
 

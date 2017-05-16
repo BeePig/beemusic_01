@@ -2,7 +2,6 @@ package com.framgia.beemusic.favorite;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -16,13 +15,12 @@ import java.util.List;
  */
 
 public class FavoriteAlbumAdapter extends RecyclerView.Adapter<FavoriteAlbumAdapter.ViewHolder> {
-    private ObservableArrayList<Song> mSongs;
-    private ObservableArrayList<String> mSingers;
+    private List<Song> mSongs;
+    private List<String> mSingers;
     private LayoutInflater mLayoutInflater;
     private FavoriteAlbumContract.Presenter mFavoriteAlbumPresenter;
 
-    public FavoriteAlbumAdapter(ObservableArrayList<Song> songs,
-            ObservableArrayList<String> singers,
+    public FavoriteAlbumAdapter(List<Song> songs,List<String> singers,
             FavoriteAlbumContract.Presenter favoriteAlbumPresenter) {
         mSongs = songs;
         mSingers = singers;

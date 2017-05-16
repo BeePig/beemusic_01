@@ -15,6 +15,8 @@ public interface MainContract {
 
         void initFavoriteAlbumFragment();
 
+        void initSingerFragment();
+
         void onSearch(String keySearch);
     }
 

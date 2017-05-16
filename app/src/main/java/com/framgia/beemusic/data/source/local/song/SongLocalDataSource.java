@@ -4,14 +4,11 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.DataSource;
 import com.framgia.beemusic.data.source.local.DataHelper;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import rx.Observable;
 import rx.functions.Func0;
 
@@ -62,9 +59,8 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
         try {
             openDatabase();
             sortOrder = SongSourceContract.SongEntry.COLUMN_NAME + " ASC";
-            cursor =
-                mDatabase.query(SongSourceContract.SongEntry.TABLE_SONG_NAME, null, selection, args,
-                    null, null, sortOrder);
+            cursor = mDatabase.query(SongSourceContract.SongEntry.TABLE_SONG_NAME, null, selection,
+                    args, null, null, sortOrder);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,7 +70,7 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
     @Override
     public Song getModel(int id) {
         String selection = SongSourceContract.SongEntry.COLUMN_ID_SONG + " = ?";
-        Cursor cursor = getCursor(selection, new String[]{String.valueOf(id)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(id) });
         if (cursor == null || cursor.getCount() < 0) return null;
         cursor.moveToNext();
         Song song = new Song(cursor);
@@ -94,8 +90,8 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
             openDatabase();
             ContentValues contentValues = convertContentValueFromSong(song);
             if (contentValues == null) return -1;
-            count = (int) mDatabase
-                .insert(SongSourceContract.SongEntry.TABLE_SONG_NAME, null, contentValues);
+            count = (int) mDatabase.insert(SongSourceContract.SongEntry.TABLE_SONG_NAME, null,
+                    contentValues);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -112,8 +108,8 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
             if (contentValues == null) return count;
             openDatabase();
             count = mDatabase.update(SongSourceContract.SongEntry.TABLE_SONG_NAME, contentValues,
-                SongSourceContract.SongEntry.COLUMN_ID_SONG + " = ?",
-                new String[]{String.valueOf(model.getId())});
+                    SongSourceContract.SongEntry.COLUMN_ID_SONG + " = ?",
+                    new String[] { String.valueOf(model.getId()) });
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -128,8 +124,8 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
         try {
             openDatabase();
             count = mDatabase.delete(SongSourceContract.SongEntry.TABLE_SONG_NAME,
-                SongSourceContract.SongEntry.COLUMN_ID_SONG + " = ?",
-                new String[]{String.valueOf(id)});
+                    SongSourceContract.SongEntry.COLUMN_ID_SONG + " = ?",
+                    new String[] { String.valueOf(id) });
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -153,7 +149,7 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
     private boolean checkExistModel(int id) {
         if (id == -1) return false;
         String selection = SongSourceContract.SongEntry.COLUMN_ID_SONG + " = ?";
-        Cursor cursor = getCursor(selection, new String[]{String.valueOf(id)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(id) });
         boolean isExist = cursor != null && cursor.getCount() > 0;
         closeCursor(cursor);
         return isExist;
@@ -171,9 +167,6 @@ public class SongLocalDataSource extends DataHelper implements DataSource<Song> 
 
     /**
      * convert {@link Song} to {@link ContentValues} object
-     *
-     * @param song
-     * @return
      */
     private ContentValues convertContentValueFromSong(Song song) {
         if (song == null) return null;

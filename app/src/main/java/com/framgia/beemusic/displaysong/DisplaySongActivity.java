@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.SeekBar;
-
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.R;
 import com.framgia.beemusic.broadcastreceiver.MusicReceiver;
@@ -21,9 +20,9 @@ import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.databinding.ActivityDisplaySongBinding;
 import com.framgia.beemusic.service.MusicService;
 
-public class DisplaySongActivity extends AppCompatActivity implements DisplaySongContract.View,
-    SeekBar.OnSeekBarChangeListener, MusicService.ListenerDetailMusic,
-    MusicReceiver.ListenerBroadcast {
+public class DisplaySongActivity extends AppCompatActivity
+        implements DisplaySongContract.View, SeekBar.OnSeekBarChangeListener,
+        MusicService.ListenerDetailMusic, MusicReceiver.ListenerBroadcast {
     private static final String EXTRA_SONG = "EXTRA_SONG";
     private static final String EXTRA_SINGER = "EXTRA_SINGER";
     private static final String CURRENT_TIME = "00:00";
@@ -161,17 +160,19 @@ public class DisplaySongActivity extends AppCompatActivity implements DisplaySon
     @Override
     public void onShuffle() {
         if (sService == null) return;
-        mModel.isShuffle.set(mModel.isShuffle.get() == MusicService.ShuffleType.OFF ?
-            MusicService.ShuffleType.ON : MusicService.ShuffleType.OFF);
+        mModel.isShuffle.set(
+                mModel.isShuffle.get() == MusicService.ShuffleType.OFF ? MusicService.ShuffleType.ON
+                        : MusicService.ShuffleType.OFF);
         initTypePlay();
     }
 
     @Override
     public void onRepeat() {
         if (sService == null) return;
-        mModel.isRepeat.set(mModel.isRepeat.get() == MusicService.RepeatType.ALL
-            ? MusicService.RepeatType.ONE : mModel.isRepeat.get() == MusicService.RepeatType.ONE
-            ? MusicService.RepeatType.OFF : MusicService.RepeatType.ALL);
+        mModel.isRepeat.set(
+                mModel.isRepeat.get() == MusicService.RepeatType.ALL ? MusicService.RepeatType.ONE
+                        : mModel.isRepeat.get() == MusicService.RepeatType.ONE
+                                ? MusicService.RepeatType.OFF : MusicService.RepeatType.ALL);
         initTypePlay();
     }
 

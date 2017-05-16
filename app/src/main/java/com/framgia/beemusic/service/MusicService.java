@@ -15,7 +15,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.R;
 import com.framgia.beemusic.data.model.Song;
@@ -25,7 +24,6 @@ import com.framgia.beemusic.data.source.SongRepository;
 import com.framgia.beemusic.data.source.SongSingerRepository;
 import com.framgia.beemusic.data.source.local.song.SongSourceContract;
 import com.framgia.beemusic.main.MainActivity;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -36,8 +34,8 @@ import static com.framgia.beemusic.service.MusicService.RepeatType.ONE;
  * Created by beepi on 15/03/2017.
  */
 public class MusicService extends Service
-    implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
-    MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener {
+        implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
+        MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener {
     public static final String ACTION_RESUME = "com.framgia.action.RESUME";
     public static final String ACTION_PAUSE = "com.framgia.action.PAUSE";
     public static final String ACTION_NEXT = "com.framgia.action.NEXT";
@@ -46,14 +44,11 @@ public class MusicService extends Service
     private static final int RUNTIME_DELAY = 1000;
 
     public enum RepeatType {
-        ALL,
-        ONE,
-        OFF
+        ALL, ONE, OFF
     }
 
     public enum ShuffleType {
-        ON,
-        OFF
+        ON, OFF
     }
 
     private ShuffleType mTypeShuffle;
@@ -217,8 +212,7 @@ public class MusicService extends Service
 
     private void initMediaPlayer() {
         mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setWakeMode(getApplicationContext(),
-            PowerManager.PARTIAL_WAKE_LOCK);
+        mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mMediaPlayer.setOnPreparedListener(this);
         mMediaPlayer.setOnCompletionListener(this);
@@ -302,13 +296,13 @@ public class MusicService extends Service
     }
 
     public void onResume() {
-        mMediaPlayer.seekTo(mMediaPlayer.getCurrentPosition() == mSong.getDuration() ?
-            0 : mMediaPlayer.getCurrentPosition());
+        mMediaPlayer.seekTo(mMediaPlayer.getCurrentPosition() == mSong.getDuration() ? 0
+                : mMediaPlayer.getCurrentPosition());
         mMediaPlayer.start();
         mIsPlaying = true;
         sendBroadcast(new Intent(ACTION_RESUME));
         mNotificationManager.notify(NOTIFICATION_ID,
-            notifyNotification(R.drawable.ic_pause, ACTION_PAUSE));
+                notifyNotification(R.drawable.ic_pause, ACTION_PAUSE));
     }
 
     public void onPause() {
@@ -316,7 +310,7 @@ public class MusicService extends Service
         mIsPlaying = false;
         sendBroadcast(new Intent(ACTION_PAUSE));
         mNotificationManager.notify(NOTIFICATION_ID,
-            notifyNotification(R.drawable.ic_play, ACTION_RESUME));
+                notifyNotification(R.drawable.ic_play, ACTION_RESUME));
         stopForeground(false);
     }
 
@@ -383,24 +377,23 @@ public class MusicService extends Service
     }
 
     private Notification notifyNotification(int drawable, String action) {
-        PendingIntent notifyPendingIntent, nextPendingIntent,
-            previousPendingIntent;
+        PendingIntent notifyPendingIntent, nextPendingIntent, previousPendingIntent;
         notifyPendingIntent = createPendingIntentService(action);
         nextPendingIntent = createPendingIntentService(ACTION_NEXT);
         previousPendingIntent = createPendingIntentService(ACTION_PREVIOUS);
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_bee);
-        Notification notification = new NotificationCompat.Builder(this)
-            .setContentIntent(createPendingIntentAcivity())
-            .setContentText(mSinger)
-            .setContentTitle(mSong.getName())
-            .setStyle(new NotificationCompat.MediaStyle())
-            .setSmallIcon(R.drawable.ic_notification)
-            .setLargeIcon(icon)
-            .addAction(R.drawable.ic_previous, ACTION_PREVIOUS, previousPendingIntent)
-            .addAction(drawable, ACTION_RESUME, notifyPendingIntent)
-            .addAction(R.drawable.ic_next, ACTION_NEXT, nextPendingIntent)
-            .setAutoCancel(action.equals(ACTION_RESUME))
-            .build();
+        Notification notification =
+                new NotificationCompat.Builder(this).setContentIntent(createPendingIntentAcivity())
+                        .setContentText(mSinger)
+                        .setContentTitle(mSong.getName())
+                        .setStyle(new NotificationCompat.MediaStyle())
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setLargeIcon(icon)
+                        .addAction(R.drawable.ic_previous, ACTION_PREVIOUS, previousPendingIntent)
+                        .addAction(drawable, ACTION_RESUME, notifyPendingIntent)
+                        .addAction(R.drawable.ic_next, ACTION_NEXT, nextPendingIntent)
+                        .setAutoCancel(action.equals(ACTION_RESUME))
+                        .build();
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
         return notification;
     }
@@ -455,7 +448,9 @@ public class MusicService extends Service
 
     public interface ListenerDetailMusic {
         void updateSeekBar(int pos);
+
         void updateDuration(int duration);
+
         void updateDetailMusic();
     }
 }

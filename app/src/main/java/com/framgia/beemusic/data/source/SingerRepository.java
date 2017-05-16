@@ -3,13 +3,10 @@ package com.framgia.beemusic.data.source;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
-
 import com.framgia.beemusic.data.model.Singer;
 import com.framgia.beemusic.data.source.local.singer.SingerLocalDataSource;
 import com.framgia.beemusic.data.source.local.singer.SingerSourceContract;
-
 import java.util.List;
-
 import rx.Observable;
 
 /**
@@ -90,13 +87,13 @@ public class SingerRepository implements SingerDataSource {
         String singerName;
         for (Integer id : idSingers) singerIds += String.valueOf(id).concat(",");
         singerIds = singerIds.substring(0, singerIds.length() - 1);
-        String selection = SingerSourceContract.SingerEntry.COLUMN_ID_SINGER
-            + " IN (" + singerIds + ")";
+        String selection =
+                SingerSourceContract.SingerEntry.COLUMN_ID_SINGER + " IN (" + singerIds + ")";
         Cursor cursor = mLocalHandler.getCursor(selection, null);
         if (cursor == null) return null;
         while (cursor.moveToNext()) {
-            singerName = cursor.getString(cursor.getColumnIndex(
-                SingerSourceContract.SingerEntry.COLUMN_NAME));
+            singerName = cursor.getString(
+                    cursor.getColumnIndex(SingerSourceContract.SingerEntry.COLUMN_NAME));
             if (TextUtils.isEmpty(singerName)) singerName = DEFAULT_SINGER;
             result = result.concat(singerName).concat(",");
         }

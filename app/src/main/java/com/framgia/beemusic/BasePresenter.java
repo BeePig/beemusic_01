@@ -5,5 +5,6 @@ package com.framgia.beemusic;
  */
 public interface BasePresenter {
     void subcribe();
+
     void unsubcribe();
 }

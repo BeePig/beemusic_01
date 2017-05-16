@@ -4,13 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.data.source.local.album.AlbumLocalDataSource;
-
 import java.util.List;
-
 import rx.Observable;
 
 /**
@@ -85,12 +82,14 @@ public class AlbumRepository implements AlbumDataSource {
 
     @Override
     public String getFilePickedImageLocal(String uriIntent) {
-        Cursor cursor = BeeApplication.getInstant().getContentResolver().query(Uri.parse(uriIntent),
-            new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+        Cursor cursor = BeeApplication.getInstant()
+                .getContentResolver()
+                .query(Uri.parse(uriIntent), new String[] { MediaStore.Images.Media.DATA }, null,
+                        null, null);
         if (cursor == null || cursor.getCount() == 0) return null;
         cursor.moveToNext();
-        String pathImg = cursor.getString(cursor.getColumnIndexOrThrow(
-            MediaStore.Images.Media.DATA));
+        String pathImg =
+                cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
         if (pathImg == null) return null;
         return pathImg;
     }

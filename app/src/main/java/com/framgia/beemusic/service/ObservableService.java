@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.data.source.SynchronizeRepository;
 
@@ -57,9 +56,9 @@ public class ObservableService extends Service {
     private void initService() {
         mSynchronizeRepository = SynchronizeRepository.getInstant();
         BeeApplication.getInstant()
-            .getContentResolver()
-            .registerContentObserver(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                true, mContentObserver);
+                .getContentResolver()
+                .registerContentObserver(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, true,
+                        mContentObserver);
     }
 
     @Override
@@ -70,7 +69,8 @@ public class ObservableService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BeeApplication.getInstant().getContentResolver()
-            .unregisterContentObserver(mContentObserver);
+        BeeApplication.getInstant()
+                .getContentResolver()
+                .unregisterContentObserver(mContentObserver);
     }
 }

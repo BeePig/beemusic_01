@@ -6,11 +6,9 @@ import android.databinding.ObservableArrayList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.databinding.ItemSongAdapterBinding;
-
 import java.util.List;
 
 /**
@@ -23,7 +21,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     private SongContract.Presenter mPresenter;
 
     public SongAdapter(ObservableArrayList<Song> songs, ObservableArrayList<String> singers,
-                       SongContract.Presenter presenter) {
+            SongContract.Presenter presenter) {
         mSongList = songs;
         mSingerList = singers;
         mPresenter = presenter;
@@ -41,7 +39,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     public SongViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mLayoutInflater == null) mLayoutInflater = LayoutInflater.from(parent.getContext());
         ItemSongAdapterBinding binding =
-            ItemSongAdapterBinding.inflate(mLayoutInflater, parent, false);
+                ItemSongAdapterBinding.inflate(mLayoutInflater, parent, false);
         return new SongViewHolder(binding);
     }
 
@@ -79,7 +77,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             private SongContract.Presenter mBindPresenter;
 
             public BindingModel(Song song, String singer, int position,
-                                SongContract.Presenter presenter) {
+                    SongContract.Presenter presenter) {
                 mSong = song;
                 mSinger = singer;
                 mPosition = position;

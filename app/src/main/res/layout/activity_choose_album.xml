@@ -1,11 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.framgia.beemusic.album.addtoalbum.ChooseAlbumActivity"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     >
 
-</android.support.constraint.ConstraintLayout>
+    <data>
+
+        <import type="com.framgia.beemusic.util.LayoutManager"/>
+        <import type="android.view.View"/>
+
+        <variable
+            name="activity"
+            type="com.framgia.beemusic.album.addtoalbum.ChooseAlbumActivity"
+            />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_green_600"
+            android:minHeight="?attr/actionBarSize"
+            bind:activity="@{activity}"
+            bind:color="@{@color/color_white}"
+            bind:title="@{@string/title_add_to_album}"
+            style="@style/ActionBarToggle"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_grey_100"
+            android:scrollbars="vertical"
+            bind:adapter="@{activity.adapter}"
+            bind:layoutManager="@{LayoutManager.grid(activity.spanCount)}"
+            />
+
+    </LinearLayout>
+</layout>

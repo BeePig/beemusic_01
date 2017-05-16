@@ -3,11 +3,14 @@ package com.framgia.beemusic.favorite;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.R;
+import com.framgia.beemusic.album.addtoalbum.ChooseAlbumActivity;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.databinding.FragmentFavoriteAlbumBinding;
 
@@ -65,10 +68,12 @@ public class FavoriteAlbumFragment extends Fragment implements FavoriteAlbumCont
         mAdapter.getSingers().remove(pos);
         mAdapter.getSongs().remove(song);
         mAdapter.notifyItemRemoved(pos);
+        Snackbar.make(getActivity().findViewById(android.R.id.content),
+                R.string.action_remove_succesfully, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void onAddToAnotherAlbum(Song song) {
-
+        BeeApplication.getInstant().startActivity(ChooseAlbumActivity.getIntent(song));
     }
 }

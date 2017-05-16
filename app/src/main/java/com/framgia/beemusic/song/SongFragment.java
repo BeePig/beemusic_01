@@ -8,8 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.framgia.beemusic.R;
+import com.framgia.beemusic.album.addtoalbum.ChooseAlbumActivity;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.databinding.FragmentSongBinding;
 
@@ -32,7 +32,7 @@ public class SongFragment extends Fragment implements SongContract.View {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_song, container, false);
         mBinding = DataBindingUtil.bind(view);
         if (mPresenter != null) mPresenter.subcribe();
@@ -50,7 +50,7 @@ public class SongFragment extends Fragment implements SongContract.View {
 
     @Override
     public void initRecycleview(ObservableArrayList<Song> songs,
-                                ObservableArrayList<String> singer) {
+            ObservableArrayList<String> singer) {
         mAdapter = new SongAdapter(songs, singer, mPresenter);
         mBinding.setAdapter(mAdapter);
     }
@@ -60,6 +60,11 @@ public class SongFragment extends Fragment implements SongContract.View {
         mAdapter.getSingerList().remove(pos);
         mAdapter.getSongList().remove(pos);
         mAdapter.notifyItemRemoved(pos);
+    }
+
+    @Override
+    public void onAddToAnotherAlbum(Song song) {
+        startActivity(ChooseAlbumActivity.getIntent(song));
     }
 
     @Override

@@ -29,7 +29,8 @@
     <string name="error_not_pick_image">Sorry, you did not choose an image or an error
         accured</string>
     <string name="title_all_song">All Songs</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_add_to_album">Add To Album</string>
+    <string name="action_remove_succesfully">remove successfully</string>
+    <string name="msg_successfull_add_album">Add to album sucessfully</string>
+    <string name="msg_eror_add_album">Have some error during add to album, please try again !!!</string>
 </resources>

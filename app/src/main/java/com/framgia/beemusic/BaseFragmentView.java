@@ -5,5 +5,6 @@ package com.framgia.beemusic;
  */
 public interface BaseFragmentView<T> {
     void setPresenter(T presenter);
+
     void onSearch(String keySearch);
 }

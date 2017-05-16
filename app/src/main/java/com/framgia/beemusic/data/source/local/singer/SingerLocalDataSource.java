@@ -3,14 +3,11 @@ package com.framgia.beemusic.data.source.local.singer;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.model.Singer;
 import com.framgia.beemusic.data.source.DataSource;
 import com.framgia.beemusic.data.source.local.DataHelper;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import rx.Observable;
 import rx.functions.Func0;
 
@@ -58,10 +55,8 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
         try {
             openDatabase();
             String sortOrder = SingerSourceContract.SingerEntry.COLUMN_NAME + " ASC";
-            cursor = mDatabase
-                .query(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME, null, selection,
-                    args,
-                    null, null, sortOrder);
+            cursor = mDatabase.query(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME, null,
+                    selection, args, null, null, sortOrder);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +66,7 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
     @Override
     public Singer getModel(int id) {
         String selection = SingerSourceContract.SingerEntry.COLUMN_ID_SINGER + " = ?";
-        Cursor cursor = getCursor(selection, new String[]{String.valueOf(id)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(id) });
         if (cursor == null || cursor.getCount() < 0) return null;
         cursor.moveToNext();
         Singer singer = new Singer(cursor);
@@ -82,7 +77,7 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
 
     private Singer getModel(String name) {
         String selection = SingerSourceContract.SingerEntry.COLUMN_NAME + " = ?";
-        Cursor cursor = getCursor(selection, new String[]{name});
+        Cursor cursor = getCursor(selection, new String[] { name });
         if (cursor == null || cursor.getCount() < 0) return null;
         cursor.moveToNext();
         Singer singer = new Singer(cursor);
@@ -105,8 +100,8 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
             }
             ContentValues contentValues = convertFromSinger(model);
             if (contentValues == null) return -1;
-            count = (int) mDatabase
-                .insert(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME, null, contentValues);
+            count = (int) mDatabase.insert(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME, null,
+                    contentValues);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -122,10 +117,9 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
             ContentValues contentValues = convertFromSinger(model);
             if (contentValues == null) return count;
             openDatabase();
-            count =
-                mDatabase.update(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME, contentValues,
-                    SingerSourceContract.SingerEntry.COLUMN_ID_SINGER + " = ?",
-                    new String[]{String.valueOf(model.getId())});
+            count = mDatabase.update(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME,
+                    contentValues, SingerSourceContract.SingerEntry.COLUMN_ID_SINGER + " = ?",
+                    new String[] { String.valueOf(model.getId()) });
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -140,8 +134,8 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
         try {
             openDatabase();
             count = mDatabase.delete(SingerSourceContract.SingerEntry.TABLE_SINGER_NAME,
-                SingerSourceContract.SingerEntry.COLUMN_ID_SINGER + " = ?",
-                new String[]{String.valueOf(id)});
+                    SingerSourceContract.SingerEntry.COLUMN_ID_SINGER + " = ?",
+                    new String[] { String.valueOf(id) });
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -165,7 +159,7 @@ public class SingerLocalDataSource extends DataHelper implements DataSource<Sing
     private boolean checkExistModel(String name) {
         if (name == null) return false;
         String selection = SingerSourceContract.SingerEntry.COLUMN_NAME + " = ?";
-        Cursor cursor = getCursor(selection, new String[]{String.valueOf(name)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(name) });
         boolean isExist = cursor != null && cursor.getCount() > 0;
         closeCursor(cursor);
         return isExist;

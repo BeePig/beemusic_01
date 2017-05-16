@@ -8,12 +8,19 @@ import com.framgia.beemusic.data.model.Song;
 public interface DisplaySongContract {
     interface View {
         void onPauseMusic();
+
         void onPlay();
+
         void onNext();
+
         void onPrevious();
+
         void onShuffle();
+
         void onRepeat();
+
         Song getSong();
+
         String getSinger();
     }
 

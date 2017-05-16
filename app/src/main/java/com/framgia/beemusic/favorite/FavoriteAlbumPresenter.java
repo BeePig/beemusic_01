@@ -93,7 +93,8 @@ public class FavoriteAlbumPresenter implements FavoriteAlbumContract.Presenter {
 
     @Override
     public void onAddToAlbum(Song song, SwipeLayout layout) {
-
+        mView.onAddToAnotherAlbum(song);
+        layout.animateReset();
     }
 
     @Override

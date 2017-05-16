@@ -25,6 +25,7 @@ import android.widget.SeekBar;
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.R;
 import com.framgia.beemusic.album.AlbumAdapter;
+import com.framgia.beemusic.album.addtoalbum.ChooseAlbumActivity;
 import com.framgia.beemusic.album.createalbum.CreatedAlbumActivity;
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.displaysong.DisplaySongActivity;
@@ -59,7 +60,7 @@ public class BindingAdapterUtil {
             initSearchView(toolbar.getMenu(), (MainActivity) activity);
             return;
         }
-        if (activity instanceof CreatedAlbumActivity) {
+        if (activity instanceof CreatedAlbumActivity || activity instanceof ChooseAlbumActivity) {
             toolbar.inflateMenu(R.menu.toolbar_created_album);
             activity.setSupportActionBar(toolbar);
             ActionBar actionBar = activity.getSupportActionBar();
@@ -137,7 +138,7 @@ public class BindingAdapterUtil {
 
     @BindingAdapter({ "touchListener", "holder" })
     public static void setOnTouchListener(final View view,
-            final DragAndDrop.OnDragListener listener, final AlbumAdapter.AlbumViewHolder holder) {
+            final DragAndDrop.OnDragListener listener, final RecyclerView.ViewHolder holder) {
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -147,17 +148,21 @@ public class BindingAdapterUtil {
                 return false;
             }
         });
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (holder.isTransparent.get()) {
-                    holder.isTransparent.set(false);
-                    return false;
+        if (holder instanceof AlbumAdapter.AlbumViewHolder) {
+            final AlbumAdapter.AlbumViewHolder albumViewHolder =
+                    ((AlbumAdapter.AlbumViewHolder) holder);
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (albumViewHolder.isTransparent.get()) {
+                        albumViewHolder.isTransparent.set(false);
+                        return false;
+                    }
+                    albumViewHolder.isTransparent.set(true);
+                    return true;
                 }
-                holder.isTransparent.set(true);
-                return true;
-            }
-        });
+            });
+        }
     }
 
     @BindingAdapter("path")

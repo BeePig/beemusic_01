@@ -3,14 +3,11 @@ package com.framgia.beemusic.data.source.local.album;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.data.source.DataSource;
 import com.framgia.beemusic.data.source.local.DataHelper;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import rx.Observable;
 import rx.functions.Func0;
 
@@ -59,9 +56,8 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
         try {
             openDatabase();
             sortOrder = AlbumSourceContract.AlbumEntry.COLUMN_NAME + " ASC";
-            cursor = mDatabase
-                .query(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME, null, selection, args,
-                    null, null, sortOrder);
+            cursor = mDatabase.query(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME, null,
+                    selection, args, null, null, sortOrder);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +67,7 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
     @Override
     public Album getModel(int id) {
         String selection = AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM + " = ?";
-        Cursor cursor = getCursor(selection, new String[]{String.valueOf(id)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(id) });
         if (cursor == null || cursor.getCount() < 0) return null;
         cursor.moveToNext();
         Album album = new Album(cursor);
@@ -94,8 +90,8 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
             }
             ContentValues contentValues = convertFromAlbum(model);
             if (contentValues == null) return -1;
-            count = (int) mDatabase
-                .insert(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME, null, contentValues);
+            count = (int) mDatabase.insert(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME, null,
+                    contentValues);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -112,8 +108,8 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
             if (contentValues == null) return count;
             openDatabase();
             count = mDatabase.update(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME, contentValues,
-                AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM + " = ?",
-                new String[]{String.valueOf(model.getId())});
+                    AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM + " = ?",
+                    new String[] { String.valueOf(model.getId()) });
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -128,8 +124,8 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
         try {
             openDatabase();
             count = mDatabase.delete(AlbumSourceContract.AlbumEntry.TABLE_ALBUM_NAME,
-                AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM + " = ?",
-                new String[]{String.valueOf(id)});
+                    AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM + " = ?",
+                    new String[] { String.valueOf(id) });
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -153,7 +149,7 @@ public class AlbumLocalDataSource extends DataHelper implements DataSource<Album
     private boolean checkExistModel(int id) {
         if (id == -1) return false;
         String selection = AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM + " = ?";
-        Cursor cursor = getCursor(selection, new String[]{String.valueOf(id)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(id) });
         boolean isExist = cursor != null && cursor.getCount() > 0;
         closeCursor(cursor);
         return isExist;

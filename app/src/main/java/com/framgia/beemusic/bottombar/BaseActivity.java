@@ -5,7 +5,6 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
 import com.framgia.beemusic.R;
 import com.framgia.beemusic.broadcastreceiver.MusicReceiver;
 import com.framgia.beemusic.displaysong.DisplaySongActivity;
@@ -85,8 +84,7 @@ public class BaseActivity extends AppCompatActivity implements MusicReceiver.Lis
     }
 
     public void onOpenDetailMusic() {
-        startActivity(DisplaySongActivity.getIntent(sService.getSong(),
-            sService.getSinger()));
+        startActivity(DisplaySongActivity.getIntent(sService.getSong(), sService.getSinger()));
     }
 
     @Override

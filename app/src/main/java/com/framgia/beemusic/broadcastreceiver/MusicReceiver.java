@@ -3,7 +3,6 @@ package com.framgia.beemusic.broadcastreceiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import com.framgia.beemusic.service.MusicService;
 
 /**
@@ -39,7 +38,9 @@ public class MusicReceiver extends BroadcastReceiver {
 
     public interface ListenerBroadcast {
         void onUpdateDetailBottom();
+
         void onPauseReceiver();
+
         void onPlayReceiver();
     }
 }

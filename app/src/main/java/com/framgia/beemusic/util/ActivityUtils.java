@@ -16,7 +16,7 @@ public class ActivityUtils {
     private final static String KEY_INSTALL = "installed";
 
     public static void replaceFragmentToActivity(@NonNull FragmentManager fragmentManager,
-                                                 @NonNull Fragment fragment, int frameId) {
+            @NonNull Fragment fragment, int frameId) {
         fragmentManager.beginTransaction().replace(frameId, fragment).commit();
     }
 

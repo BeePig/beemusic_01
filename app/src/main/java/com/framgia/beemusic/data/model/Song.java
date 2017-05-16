@@ -3,10 +3,8 @@ package com.framgia.beemusic.data.model;
 import android.database.Cursor;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-
 import com.android.databinding.library.baseAdapters.BR;
 import com.framgia.beemusic.data.source.local.song.SongSourceContract;
-
 import java.io.Serializable;
 
 /**
@@ -30,15 +28,15 @@ public class Song extends BaseObservable implements Serializable {
         mName = cursor.getString(cursor.getColumnIndex(SongSourceContract.SongEntry.COLUMN_NAME));
         mLink = cursor.getString(cursor.getColumnIndex(SongSourceContract.SongEntry.COLUMN_LINK));
         mType = cursor.getInt(cursor.getColumnIndex(SongSourceContract.SongEntry.COLUMN_TYPE));
-        mIsFavorite = cursor.getInt(cursor.getColumnIndex(SongSourceContract.SongEntry
-            .COLUMN_IS_FAVORITE)) == 1;
+        mIsFavorite = cursor.getInt(
+                cursor.getColumnIndex(SongSourceContract.SongEntry.COLUMN_IS_FAVORITE)) == 1;
         mGenre = cursor.getString(cursor.getColumnIndex(SongSourceContract.SongEntry.COLUMN_GENRE));
-        mDuration = cursor.getInt(cursor.getColumnIndex(SongSourceContract.SongEntry
-            .COLUMN_DURATION));
+        mDuration =
+                cursor.getInt(cursor.getColumnIndex(SongSourceContract.SongEntry.COLUMN_DURATION));
     }
 
-    public Song(String name, String link, boolean isFavorite, int type,
-                String genre, int duration) {
+    public Song(String name, String link, boolean isFavorite, int type, String genre,
+            int duration) {
         mName = name;
         mLink = link;
         mIsFavorite = isFavorite;
@@ -48,7 +46,7 @@ public class Song extends BaseObservable implements Serializable {
     }
 
     public Song(int id, String name, String link, boolean isFavorite, int type, String genre,
-                int duration) {
+            int duration) {
         mId = id;
         mName = name;
         mLink = link;

@@ -20,14 +20,18 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-
 import com.framgia.beemusic.R;
 
-import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable.CIRCLE_IMAGE_VIEW;
-import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable.CIRCLE_IMAGE_VIEW_BORDER_COLOR;
-import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable.CIRCLE_IMAGE_VIEW_BORDER_OVERLAY;
-import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable.CIRCLE_IMAGE_VIEW_BORDER_WIDTH;
-import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable.CIRCLE_IMAGE_VIEW_FILL_COLOR;
+import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable
+        .CIRCLE_IMAGE_VIEW;
+import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable
+        .CIRCLE_IMAGE_VIEW_BORDER_COLOR;
+import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable
+        .CIRCLE_IMAGE_VIEW_BORDER_OVERLAY;
+import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable
+        .CIRCLE_IMAGE_VIEW_BORDER_WIDTH;
+import static com.framgia.beemusic.util.circleimageview.CircleImageResource.Styleable
+        .CIRCLE_IMAGE_VIEW_FILL_COLOR;
 
 /**
  * Created by beepi on 23/02/2017.
@@ -74,10 +78,9 @@ public class CircleImageView extends ImageView {
         super(context, attrs, defStyle);
         TypedArray array = context.obtainStyledAttributes(attrs, CIRCLE_IMAGE_VIEW, defStyle, 0);
         mBorderWidth =
-            array.getDimensionPixelSize(CIRCLE_IMAGE_VIEW_BORDER_WIDTH, DEFAULT_BORDER_WIDTH);
+                array.getDimensionPixelSize(CIRCLE_IMAGE_VIEW_BORDER_WIDTH, DEFAULT_BORDER_WIDTH);
         mBorderColor = array.getColor(CIRCLE_IMAGE_VIEW_BORDER_COLOR, DEFAULT_BORDER_COLOR);
-        mBorderOverlay =
-            array.getBoolean(CIRCLE_IMAGE_VIEW_BORDER_OVERLAY, DEFAULT_BORDER_OVERLAY);
+        mBorderOverlay = array.getBoolean(CIRCLE_IMAGE_VIEW_BORDER_OVERLAY, DEFAULT_BORDER_OVERLAY);
         mFillColor = array.getColor(CIRCLE_IMAGE_VIEW_FILL_COLOR, DEFAULT_FILL_COLOR);
         array.recycle();
         initDraw();
@@ -100,7 +103,7 @@ public class CircleImageView extends ImageView {
     public void setScaleType(ImageView.ScaleType scaleType) {
         if (scaleType == SCALE_TYPE) return;
         throw new IllegalArgumentException(
-            String.format(String.valueOf(R.string.error_support_scale), scaleType));
+                String.format(String.valueOf(R.string.error_support_scale), scaleType));
     }
 
     @Override
@@ -118,13 +121,13 @@ public class CircleImageView extends ImageView {
         if (mBitmap == null) return;
         if (mFillColor != Color.TRANSPARENT) {
             canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius,
-                mFillPaint);
+                    mFillPaint);
         }
         canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius,
-            mBitmapPaint);
+                mBitmapPaint);
         if (mBorderWidth <= 0) return;
         canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius,
-            mBorderPaint);
+                mBorderPaint);
     }
 
     @Override
@@ -183,7 +186,7 @@ public class CircleImageView extends ImageView {
      * this has no effect if the drawable is opaque or no drawable is set.
      *
      * @param fillColorRes The color resource to be resolved to a color and
-     *                     drawn behind the drawable
+     * drawn behind the drawable
      * @deprecated Fill color support is going to be removed in the future
      */
     @Deprecated
@@ -269,12 +272,12 @@ public class CircleImageView extends ImageView {
         try {
             Bitmap bitmap;
             if (drawable instanceof ColorDrawable) {
-                bitmap = Bitmap
-                    .createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
+                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION,
+                        BITMAP_CONFIG);
             }
-            bitmap = Bitmap
-                .createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
-                    BITMAP_CONFIG);
+            bitmap =
+                    Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(),
+                            BITMAP_CONFIG);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
@@ -315,7 +318,7 @@ public class CircleImageView extends ImageView {
         mBitmapWidth = mBitmap.getWidth();
         mBorderRect.set(calculateBounds());
         mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f,
-            (mBorderRect.width() - mBorderWidth) / 2.0f);
+                (mBorderRect.width() - mBorderWidth) / 2.0f);
         mDrawableRect.set(mBorderRect);
         if (!mBorderOverlay && mBorderWidth > 0) {
             mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f);
@@ -349,7 +352,7 @@ public class CircleImageView extends ImageView {
         }
         mShaderMatrix.setScale(scale, scale);
         mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left,
-            (int) (dy + 0.5f) + mDrawableRect.top);
+                (int) (dy + 0.5f) + mDrawableRect.top);
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 }

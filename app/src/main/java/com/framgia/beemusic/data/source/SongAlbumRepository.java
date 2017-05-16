@@ -3,11 +3,9 @@ package com.framgia.beemusic.data.source;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.source.local.DataHelper;
 import com.framgia.beemusic.data.source.local.song.SongSourceContract;
 import com.framgia.beemusic.data.source.local.songalbum.SongAlbumSourceContract;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,6 @@ public class SongAlbumRepository extends DataHelper implements DataSourceRelatio
     }
 
     /**
-     * @param idSong
      * @return list of id albums
      */
     @Override
@@ -37,12 +34,11 @@ public class SongAlbumRepository extends DataHelper implements DataSourceRelatio
         String selection = SongAlbumSourceContract.SongAlbumEntry.COLUMN_ID_SONG + " = ?";
         List<Integer> idAlbums = new ArrayList<>();
         int idAlbum;
-        Cursor cursor = getCursor(selection,
-            new String[]{String.valueOf(idSong)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(idSong) });
         if (cursor == null || cursor.getCount() == 0) return null;
         while (cursor.moveToNext()) {
-            idAlbum = cursor.getInt(cursor.getColumnIndex(
-                SongAlbumSourceContract.SongAlbumEntry.COLUMN_ID_ALBUM));
+            idAlbum = cursor.getInt(
+                    cursor.getColumnIndex(SongAlbumSourceContract.SongAlbumEntry.COLUMN_ID_ALBUM));
             idAlbums.add(idAlbum);
         }
         closeCursor(cursor);
@@ -56,10 +52,9 @@ public class SongAlbumRepository extends DataHelper implements DataSourceRelatio
         try {
             openDatabase();
             String sortOrder = SongSourceContract.SongEntry.COLUMN_ID_SONG + " ASC";
-            cursor = mDatabase.query(SongAlbumSourceContract.SongAlbumEntry
-                    .TABLE_SONG_ALBUM_RELATIONSHIP_NAME, null,
-                selection, args,
-                null, null, sortOrder);
+            cursor = mDatabase.query(
+                    SongAlbumSourceContract.SongAlbumEntry.TABLE_SONG_ALBUM_RELATIONSHIP_NAME, null,
+                    selection, args, null, null, sortOrder);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,9 +68,8 @@ public class SongAlbumRepository extends DataHelper implements DataSourceRelatio
             openDatabase();
             ContentValues contentValues = createContentValue(idSong, idAlbum);
             if (contentValues == null) return -1;
-            count = (int) mDatabase
-                .insert(SongAlbumSourceContract.SongAlbumEntry.TABLE_SONG_ALBUM_RELATIONSHIP_NAME,
-                    null,
+            count = (int) mDatabase.insert(
+                    SongAlbumSourceContract.SongAlbumEntry.TABLE_SONG_ALBUM_RELATIONSHIP_NAME, null,
                     contentValues);
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,8 +84,7 @@ public class SongAlbumRepository extends DataHelper implements DataSourceRelatio
         int count = -1;
         try {
             openDatabase();
-            count =
-                mDatabase.delete(
+            count = mDatabase.delete(
                     SongAlbumSourceContract.SongAlbumEntry.TABLE_SONG_ALBUM_RELATIONSHIP_NAME,
                     selection, args);
         } catch (Exception e) {
@@ -105,16 +98,15 @@ public class SongAlbumRepository extends DataHelper implements DataSourceRelatio
     @Override
     public int delete(int idSong) {
         String selection = SongAlbumSourceContract.SongAlbumEntry.COLUMN_ID_SONG + " = ?";
-        return delete(selection, new String[]{String.valueOf(idSong)});
+        return delete(selection, new String[] { String.valueOf(idSong) });
     }
 
     @Override
     public void deleteAlls() {
         try {
             openDatabase();
-            mDatabase
-                .delete(SongAlbumSourceContract.SongAlbumEntry.TABLE_SONG_ALBUM_RELATIONSHIP_NAME,
-                    null,
+            mDatabase.delete(
+                    SongAlbumSourceContract.SongAlbumEntry.TABLE_SONG_ALBUM_RELATIONSHIP_NAME, null,
                     null);
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,12 +120,11 @@ public class SongAlbumRepository extends DataHelper implements DataSourceRelatio
         String selection = SongAlbumSourceContract.SongAlbumEntry.COLUMN_ID_ALBUM + " = ?";
         List<Integer> idSongs = new ArrayList<>();
         int idSong;
-        Cursor cursor = getCursor(selection,
-            new String[]{String.valueOf(idAlbum)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(idAlbum) });
         if (cursor == null || cursor.getCount() == 0) return null;
         while (cursor.moveToNext()) {
-            idSong = cursor.getInt(cursor.getColumnIndex(
-                SongAlbumSourceContract.SongAlbumEntry.COLUMN_ID_SONG));
+            idSong = cursor.getInt(
+                    cursor.getColumnIndex(SongAlbumSourceContract.SongAlbumEntry.COLUMN_ID_SONG));
             idSongs.add(idSong);
         }
         closeCursor(cursor);

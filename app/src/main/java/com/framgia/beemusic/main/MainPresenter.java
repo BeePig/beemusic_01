@@ -1,12 +1,10 @@
 package com.framgia.beemusic.main;
 
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.source.AlbumRepository;
 import com.framgia.beemusic.data.source.SingerRepository;
 import com.framgia.beemusic.data.source.SongRepository;
 import com.framgia.beemusic.data.source.SynchronizeRepository;
-
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -25,9 +23,8 @@ public class MainPresenter implements MainContract.Presenter {
     private CompositeSubscription mSubscription;
 
     public MainPresenter(MainContract.View view, CompositeSubscription subscription,
-                         SongRepository songRepository, AlbumRepository albumRepository,
-                         SingerRepository singerRepository,
-                         SynchronizeRepository synchronizeRepository) {
+            SongRepository songRepository, AlbumRepository albumRepository,
+            SingerRepository singerRepository, SynchronizeRepository synchronizeRepository) {
         mView = view;
         mSubscription = subscription;
         mSongRepository = songRepository;
@@ -39,27 +36,27 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void subcribe() {
         mSubscription.clear();
-        Subscription subscription = mSynchronizeRepository.getCursorObservable
-            (mSynchronizeRepository.getCursorFromMediastore())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Subscriber<Cursor>() {
-                @Override
-                public void onCompleted() {
-                    mView.startObserverService();
-                    mView.initSongFragment();
-                }
+        Subscription subscription = mSynchronizeRepository.getCursorObservable(
+                mSynchronizeRepository.getCursorFromMediastore())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Cursor>() {
+                    @Override
+                    public void onCompleted() {
+                        mView.startObserverService();
+                        mView.initSongFragment();
+                    }
 
-                @Override
-                public void onError(Throwable e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
-                @Override
-                public void onNext(Cursor cursor) {
-                    mSynchronizeRepository.synchronizeByAddModel(cursor);
-                }
-            });
+                    @Override
+                    public void onNext(Cursor cursor) {
+                        mSynchronizeRepository.synchronizeByAddModel(cursor);
+                    }
+                });
         mSubscription.add(subscription);
     }
 

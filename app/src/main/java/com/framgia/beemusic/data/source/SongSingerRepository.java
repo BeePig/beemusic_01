@@ -3,11 +3,9 @@ package com.framgia.beemusic.data.source;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.source.local.DataHelper;
 import com.framgia.beemusic.data.source.local.song.SongSourceContract;
 import com.framgia.beemusic.data.source.local.songsinger.SongSingerSourceContract;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +31,11 @@ public class SongSingerRepository extends DataHelper implements DataSourceRelati
         String selection = SongSingerSourceContract.SongSingerEntry.COLUMN_ID_SONG + " = ?";
         List<Integer> idSingers = new ArrayList<>();
         int idSinger;
-        Cursor cursor = getCursor(selection,
-            new String[]{String.valueOf(idSong)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(idSong) });
         if (cursor == null || cursor.getCount() == 0) return null;
         while (cursor.moveToNext()) {
             idSinger = cursor.getInt(cursor.getColumnIndex(
-                SongSingerSourceContract
-                    .SongSingerEntry.COLUMN_ID_SINGER));
+                    SongSingerSourceContract.SongSingerEntry.COLUMN_ID_SINGER));
             idSingers.add(idSinger);
         }
         closeCursor(cursor);
@@ -53,10 +49,9 @@ public class SongSingerRepository extends DataHelper implements DataSourceRelati
         try {
             openDatabase();
             String sortOrder = SongSourceContract.SongEntry.COLUMN_ID_SONG + " ASC";
-            cursor = mDatabase.query(SongSingerSourceContract.SongSingerEntry
-                    .TABLE_SONG_SINGER_RELATIONSHIP_NAME, null,
-                selection, args,
-                null, null, sortOrder);
+            cursor = mDatabase.query(
+                    SongSingerSourceContract.SongSingerEntry.TABLE_SONG_SINGER_RELATIONSHIP_NAME,
+                    null, selection, args, null, null, sortOrder);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,11 +65,9 @@ public class SongSingerRepository extends DataHelper implements DataSourceRelati
             openDatabase();
             ContentValues contentValues = createContentValue(idSong, idSinger);
             if (contentValues == null) return -1;
-            count = (int) mDatabase
-                .insert(
+            count = (int) mDatabase.insert(
                     SongSingerSourceContract.SongSingerEntry.TABLE_SONG_SINGER_RELATIONSHIP_NAME,
-                    null,
-                    contentValues);
+                    null, contentValues);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -88,8 +81,7 @@ public class SongSingerRepository extends DataHelper implements DataSourceRelati
         int count = -1;
         try {
             openDatabase();
-            count = mDatabase
-                .delete(
+            count = mDatabase.delete(
                     SongSingerSourceContract.SongSingerEntry.TABLE_SONG_SINGER_RELATIONSHIP_NAME,
                     selection, args);
         } catch (Exception e) {
@@ -103,18 +95,16 @@ public class SongSingerRepository extends DataHelper implements DataSourceRelati
     @Override
     public int delete(int idSong) {
         String selection = SongSingerSourceContract.SongSingerEntry.COLUMN_ID_SONG + " = ?";
-        return delete(selection, new String[]{String.valueOf(idSong)});
+        return delete(selection, new String[] { String.valueOf(idSong) });
     }
 
     @Override
     public void deleteAlls() {
         try {
             openDatabase();
-            mDatabase
-                .delete(
+            mDatabase.delete(
                     SongSingerSourceContract.SongSingerEntry.TABLE_SONG_SINGER_RELATIONSHIP_NAME,
-                    null,
-                    null);
+                    null, null);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -127,13 +117,11 @@ public class SongSingerRepository extends DataHelper implements DataSourceRelati
         String selection = SongSingerSourceContract.SongSingerEntry.COLUMN_ID_SINGER + " = ?";
         List<Integer> idSongs = new ArrayList<>();
         int idSong;
-        Cursor cursor = getCursor(selection,
-            new String[]{String.valueOf(idSinger)});
+        Cursor cursor = getCursor(selection, new String[] { String.valueOf(idSinger) });
         if (cursor == null || cursor.getCount() == 0) return null;
         while (cursor.moveToNext()) {
-            idSong = cursor.getInt(cursor.getColumnIndex(
-                SongSingerSourceContract
-                    .SongSingerEntry.COLUMN_ID_SONG));
+            idSong = cursor.getInt(
+                    cursor.getColumnIndex(SongSingerSourceContract.SongSingerEntry.COLUMN_ID_SONG));
             idSongs.add(idSong);
         }
         closeCursor(cursor);

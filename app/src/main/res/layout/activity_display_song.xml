@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools"
+    >
 
     <data>
 
@@ -13,24 +14,28 @@
 
         <variable
             name="view"
-            type="com.framgia.beemusic.displaysong.DisplaySongActivity"/>
+            type="com.framgia.beemusic.displaysong.DisplaySongActivity"
+            />
 
         <variable
             name="model"
-            type="com.framgia.beemusic.displaysong.DisplaySongActivity.BindDisplaySong"/>
+            type="com.framgia.beemusic.displaysong.DisplaySongActivity.BindDisplaySong"
+            />
 
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tool_bar"
@@ -42,7 +47,8 @@
                 app:theme="@style/SearchView"
                 bind:color="@{@color/color_white}"
                 bind:stop="@{view}"
-                bind:title="@{@string/app_name}"/>
+                bind:title="@{@string/app_name}"
+                />
 
             <com.framgia.beemusic.util.circleimageview.CircleImageView
                 android:id="@+id/image_song"
@@ -53,7 +59,8 @@
                 android:src="@drawable/ic_ava"
                 app:civ_border_color="@color/color_white"
                 app:civ_border_width="@dimen/dp_2"
-                bind:rotate="@{model.rotate}"/>
+                bind:rotate="@{model.rotate}"
+                />
 
             <TextView
                 android:id="@+id/text_song"
@@ -63,7 +70,8 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:ellipsize="marquee"
                 android:text="@{model.song}"
-                android:textColor="@color/color_black"/>
+                android:textColor="@color/color_black"
+                />
 
             <TextView
                 android:id="@+id/text_singer"
@@ -72,27 +80,31 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp_10"
                 android:text="@{model.singer}"
-                android:textColor="@color/color_red_500"/>
+                android:textColor="@color/color_red_500"
+                />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_100"
-            android:background="@color/color_green_600">
+            android:background="@color/color_green_600"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_10"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     android:id="@+id/text_current_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{model.currentTime}"
-                    android:textColor="@color/color_white"/>
+                    android:textColor="@color/color_white"
+                    />
 
                 <SeekBar
                     android:id="@+id/seekbar"
@@ -102,14 +114,16 @@
                     android:background="@color/color_green_600"
                     android:max="@{model.totalProgress}"
                     android:progress="@{model.currentProgress}"
-                    bind:listener="@{view}"/>
+                    bind:listener="@{view}"
+                    />
 
                 <TextView
                     android:id="@+id/text_total_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{model.durationTime}"
-                    android:textColor="@color/color_white"/>
+                    android:textColor="@color/color_white"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -117,7 +131,8 @@
                 android:layout_height="@dimen/dp_50"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <ImageView
                     android:id="@+id/image_shuffle"
@@ -126,7 +141,8 @@
                     android:layout_marginRight="@dimen/dp_10"
                     android:layout_weight="1"
                     android:onClick="@{()->view.onShuffle()}"
-                    android:src="@{model.isShuffle == ShuffleType.ON? @drawable/ic_shuffle_black : @drawable/ic_shuffle}"/>
+                    android:src="@{model.isShuffle == ShuffleType.ON? @drawable/ic_shuffle_black : @drawable/ic_shuffle}"
+                    />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -136,7 +152,8 @@
                     android:layout_weight="1"
                     android:onClick="@{()->view.onPrevious()}"
                     android:padding="@dimen/dp_2"
-                    android:src="@drawable/ic_previous"/>
+                    android:src="@drawable/ic_previous"
+                    />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -147,7 +164,8 @@
                     android:onClick="@{()->view.onPlay()}"
                     android:padding="@dimen/dp_2"
                     android:src="@drawable/ic_play"
-                    android:visibility="@{model.isPlay ? View.GONE : View.VISIBLE }"/>
+                    android:visibility="@{model.isPlay ? View.GONE : View.VISIBLE }"
+                    />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -158,7 +176,8 @@
                     android:onClick="@{()->view.onPauseMusic()}"
                     android:padding="@dimen/dp_2"
                     android:src="@drawable/ic_pause"
-                    android:visibility="@{model.isPlay ? View.VISIBLE : View.GONE }"/>
+                    android:visibility="@{model.isPlay ? View.VISIBLE : View.GONE }"
+                    />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -168,7 +187,8 @@
                     android:layout_weight="1"
                     android:onClick="@{()->view.onNext()}"
                     android:padding="@dimen/dp_2"
-                    android:src="@drawable/ic_next"/>
+                    android:src="@drawable/ic_next"
+                    />
 
                 <ImageView
                     android:id="@+id/image_repeat"
@@ -177,7 +197,8 @@
                     android:layout_marginRight="@dimen/dp_10"
                     android:layout_weight="1"
                     android:onClick="@{()->view.onRepeat()}"
-                    android:src="@{model.isRepeat == RepeatType.ONE ? @drawable/ic_repeat_one: model.isRepeat == RepeatType.ALL? @drawable/ic_repeat_black : @drawable/ic_repeat}"/>
+                    android:src="@{model.isRepeat == RepeatType.ONE ? @drawable/ic_repeat_one: model.isRepeat == RepeatType.ALL? @drawable/ic_repeat_black : @drawable/ic_repeat}"
+                    />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

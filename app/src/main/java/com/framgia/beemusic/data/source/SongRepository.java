@@ -2,13 +2,10 @@ package com.framgia.beemusic.data.source;
 
 import android.content.Context;
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.local.song.SongLocalDataSource;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import rx.Observable;
 
 /**

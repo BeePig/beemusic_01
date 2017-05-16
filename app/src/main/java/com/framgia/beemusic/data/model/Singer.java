@@ -1,7 +1,6 @@
 package com.framgia.beemusic.data.model;
 
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.source.local.singer.SingerSourceContract;
 
 /**
@@ -13,12 +12,12 @@ public class Singer {
     private int mCount;
 
     public Singer(Cursor cursor) {
-        mId = cursor.getInt(cursor.getColumnIndex(SingerSourceContract.SingerEntry
-            .COLUMN_ID_SINGER));
-        mName = cursor.getString(cursor.getColumnIndex(SingerSourceContract.SingerEntry
-            .COLUMN_NAME));
-        mCount = cursor.getInt(cursor.getColumnIndex(SingerSourceContract.SingerEntry
-            .COLUMN_COUNT));
+        mId = cursor.getInt(
+                cursor.getColumnIndex(SingerSourceContract.SingerEntry.COLUMN_ID_SINGER));
+        mName = cursor.getString(
+                cursor.getColumnIndex(SingerSourceContract.SingerEntry.COLUMN_NAME));
+        mCount =
+                cursor.getInt(cursor.getColumnIndex(SingerSourceContract.SingerEntry.COLUMN_COUNT));
     }
 
     public Singer(String name, int count) {

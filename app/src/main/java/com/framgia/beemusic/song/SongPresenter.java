@@ -2,7 +2,6 @@ package com.framgia.beemusic.song;
 
 import android.databinding.ObservableArrayList;
 import android.support.annotation.NonNull;
-
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.AlbumDataSource;
@@ -11,7 +10,6 @@ import com.framgia.beemusic.data.source.SingerDataSource;
 import com.framgia.beemusic.data.source.SongDataSource;
 import com.framgia.beemusic.data.source.local.song.SongSourceContract;
 import com.framgia.beemusic.displaysong.DisplaySongActivity;
-
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 import rx.Observable;
 import rx.Subscriber;
@@ -31,12 +29,9 @@ public class SongPresenter implements SongContract.Presenter {
     private DataSourceRelationship mSongSingerHandler;
     private CompositeSubscription mSubscription;
 
-    public SongPresenter(@NonNull SongContract.View view,
-                         SongDataSource songHandler,
-                         AlbumDataSource albumHandler,
-                         SingerDataSource singerHandler,
-                         DataSourceRelationship songAlbumHandler,
-                         DataSourceRelationship songSingerHandler) {
+    public SongPresenter(@NonNull SongContract.View view, SongDataSource songHandler,
+            AlbumDataSource albumHandler, SingerDataSource singerHandler,
+            DataSourceRelationship songAlbumHandler, DataSourceRelationship songSingerHandler) {
         mView = view;
         mSongHandler = songHandler;
         mAlbumHandler = albumHandler;
@@ -52,28 +47,28 @@ public class SongPresenter implements SongContract.Presenter {
         mSubscription.clear();
         final ObservableArrayList<Song> songs = new ObservableArrayList<>();
         final ObservableArrayList<String> singers = new ObservableArrayList<>();
-        Subscription subscription = mSongHandler.getDataObservableByModels(
-            mSongHandler.getModel(null, null))
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.newThread())
-            .subscribe(new Subscriber<Song>() {
-                @Override
-                public void onCompleted() {
-                    mView.initRecycleview(songs, singers);
-                }
+        Subscription subscription =
+                mSongHandler.getDataObservableByModels(mSongHandler.getModel(null, null))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.newThread())
+                        .subscribe(new Subscriber<Song>() {
+                            @Override
+                            public void onCompleted() {
+                                mView.initRecycleview(songs, singers);
+                            }
 
-                @Override
-                public void onError(Throwable e) {
-                    e.printStackTrace();
-                }
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                            }
 
-                @Override
-                public void onNext(Song song) {
-                    songs.add(song);
-                    singers.add(mSingerHandler.getSingerNameByIds(
-                        mSongSingerHandler.getListId(song.getId())));
-                }
-            });
+                            @Override
+                            public void onNext(Song song) {
+                                songs.add(song);
+                                singers.add(mSingerHandler.getSingerNameByIds(
+                                        mSongSingerHandler.getListId(song.getId())));
+                            }
+                        });
         mSubscription.add(subscription);
     }
 
@@ -97,7 +92,7 @@ public class SongPresenter implements SongContract.Presenter {
     @Override
     public void onAddToAlbum(Song song, SwipeLayout layout) {
         layout.animateReset();
-        // todo open fragment album for adding song
+        mView.onAddToAnotherAlbum(song);
     }
 
     @Override
@@ -122,23 +117,23 @@ public class SongPresenter implements SongContract.Presenter {
     @Override
     public void subcribeFavorite(Song song) {
         Subscription subscription = Observable.just(song)
-            .observeOn(Schedulers.newThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(new Subscriber<Song>() {
-                @Override
-                public void onCompleted() {
-                }
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Song>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-                @Override
-                public void onError(Throwable e) {
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
-                @Override
-                public void onNext(Song song) {
-                    mSongHandler.update(song);
-                }
-            });
+                    @Override
+                    public void onNext(Song song) {
+                        mSongHandler.update(song);
+                    }
+                });
         mSubscription.add(subscription);
     }
 
@@ -147,29 +142,29 @@ public class SongPresenter implements SongContract.Presenter {
         final ObservableArrayList<Song> songs = new ObservableArrayList<>();
         final ObservableArrayList<String> singers = new ObservableArrayList<>();
         String selection = SongSourceContract.SongEntry.COLUMN_NAME + " like '%" + keySearch + "%'";
-        Subscription subscription = mSongHandler.getDataObservableByModels(
-            mSongHandler.getModel(selection, null))
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.newThread())
-            .subscribe(new Subscriber<Song>() {
-                @Override
-                public void onCompleted() {
-                    mView.initRecycleview(songs, singers);
-                }
+        Subscription subscription =
+                mSongHandler.getDataObservableByModels(mSongHandler.getModel(selection, null))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.newThread())
+                        .subscribe(new Subscriber<Song>() {
+                            @Override
+                            public void onCompleted() {
+                                mView.initRecycleview(songs, singers);
+                            }
 
-                @Override
-                public void onError(Throwable e) {
-                    e.printStackTrace();
-                    mView.initRecycleview(songs, singers);
-                }
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                                mView.initRecycleview(songs, singers);
+                            }
 
-                @Override
-                public void onNext(Song song) {
-                    songs.add(song);
-                    singers.add(mSingerHandler.getSingerNameByIds(
-                        mSongSingerHandler.getListId(song.getId())));
-                }
-            });
+                            @Override
+                            public void onNext(Song song) {
+                                songs.add(song);
+                                singers.add(mSingerHandler.getSingerNameByIds(
+                                        mSongSingerHandler.getListId(song.getId())));
+                            }
+                        });
         mSubscription.add(subscription);
     }
 }

@@ -13,7 +13,7 @@ public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                               RecyclerView.State state) {
+            RecyclerView.State state) {
         outRect.bottom = mVerticalSpaceHeight;
     }
 }

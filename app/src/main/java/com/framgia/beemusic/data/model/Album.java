@@ -1,7 +1,6 @@
 package com.framgia.beemusic.data.model;
 
 import android.database.Cursor;
-
 import com.framgia.beemusic.data.source.local.album.AlbumSourceContract;
 
 /**
@@ -32,8 +31,8 @@ public class Album {
     public Album(Cursor cursor) {
         mId = cursor.getInt(cursor.getColumnIndex(AlbumSourceContract.AlbumEntry.COLUMN_ID_ALBUM));
         mName = cursor.getString(cursor.getColumnIndex(AlbumSourceContract.AlbumEntry.COLUMN_NAME));
-        mImageLink = cursor
-            .getString(cursor.getColumnIndex(AlbumSourceContract.AlbumEntry.COLUMN_IMAGE_LINK));
+        mImageLink = cursor.getString(
+                cursor.getColumnIndex(AlbumSourceContract.AlbumEntry.COLUMN_IMAGE_LINK));
         mCount = cursor.getInt(cursor.getColumnIndex(AlbumSourceContract.AlbumEntry.COLUMN_COUNT));
     }
 

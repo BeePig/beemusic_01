@@ -17,12 +17,14 @@
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{()->model.bindPresenter.onOpenPlayMusic(model.song,model.singer)}"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:onClick="@{()->model.bindPresenter.onOpenPlayMusic(model.song,model.singer)}"
             >
 
             <LinearLayout
@@ -80,8 +82,9 @@
                 android:id="@+id/image_view_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->model.bindPresenter.onDeleteSong(model.song,model.holder)}"
                 android:paddingRight="@dimen/dp_50"
-                android:src="@drawable/ic_delete"
+                android:src="@drawable/ic_is_non_favorite"
                 />
 
             <ImageView

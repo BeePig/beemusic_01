@@ -36,6 +36,7 @@ dependencies {
   compile 'ru.rambler.android:swipe-layout:1.0.14'
   compile 'io.reactivex:rxandroid:0.25.0'
   compile 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.0.5'
+  compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
   testCompile 'junit:junit:4.12'
 }
 

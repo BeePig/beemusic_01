@@ -1,6 +1,7 @@
 package com.framgia.beemusic.favorite;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,13 +10,13 @@ import android.view.ViewGroup;
 import com.framgia.beemusic.R;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.databinding.FragmentFavoriteAlbumBinding;
-import java.util.List;
 
 public class FavoriteAlbumFragment extends Fragment implements FavoriteAlbumContract.View {
 
     private FragmentFavoriteAlbumBinding mBinding;
     private FavoriteAlbumContract.Presenter mPresenter;
     private FavoriteAlbumAdapter mAdapter;
+
     public FavoriteAlbumFragment() {
     }
 
@@ -53,15 +54,16 @@ public class FavoriteAlbumFragment extends Fragment implements FavoriteAlbumCont
     }
 
     @Override
-    public void initRecycleview(List<Song> songs, List<String> singer) {
+    public void initRecycleview(ObservableArrayList<Song> songs,
+            ObservableArrayList<String> singer) {
         mAdapter = new FavoriteAlbumAdapter(songs, singer, mPresenter);
         mBinding.setAdapter(mAdapter);
     }
 
     @Override
-    public void notifyItemRemove(int pos) {
+    public void notifyItemRemove(Song song, int pos) {
         mAdapter.getSingers().remove(pos);
-        mAdapter.getSongs().remove(pos);
+        mAdapter.getSongs().remove(song);
         mAdapter.notifyItemRemoved(pos);
     }
 

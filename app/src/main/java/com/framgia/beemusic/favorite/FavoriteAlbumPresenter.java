@@ -1,13 +1,14 @@
 package com.framgia.beemusic.favorite;
 
+import android.databinding.ObservableArrayList;
+import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.AlbumDataSource;
 import com.framgia.beemusic.data.source.DataSourceRelationship;
 import com.framgia.beemusic.data.source.SingerDataSource;
 import com.framgia.beemusic.data.source.SongDataSource;
 import com.framgia.beemusic.data.source.local.song.SongSourceContract;
-import java.util.ArrayList;
-import java.util.List;
+import com.framgia.beemusic.displaysong.DisplaySongActivity;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
 import rx.Subscriber;
 import rx.Subscription;
@@ -44,8 +45,8 @@ public class FavoriteAlbumPresenter implements FavoriteAlbumContract.Presenter {
     @Override
     public void subcribe() {
         mSubscription.clear();
-        final List<Song> songs = new ArrayList<>();
-        final List<String> singers = new ArrayList<>();
+        final ObservableArrayList<Song> songs = new ObservableArrayList<>();
+        final ObservableArrayList<String> singers = new ObservableArrayList<>();
         String selection = SongSourceContract.SongEntry.COLUMN_IS_FAVORITE + " = ?";
         Subscription subscription = mSongRepository.getDataObservableByModels(
                 mSongRepository.getModel(selection, new String[] { IS_FAVORITE }))
@@ -83,8 +84,11 @@ public class FavoriteAlbumPresenter implements FavoriteAlbumContract.Presenter {
     }
 
     @Override
-    public void onDeleteSong(Song song, int pos) {
-
+    public void onDeleteSong(Song song, FavoriteAlbumAdapter.ViewHolder holder) {
+        mView.notifyItemRemove(song, holder.getAdapterPosition());
+        if (song == null) return;
+        song.setIsFavorite(false);
+        mSongRepository.update(song);
     }
 
     @Override
@@ -93,22 +97,7 @@ public class FavoriteAlbumPresenter implements FavoriteAlbumContract.Presenter {
     }
 
     @Override
-    public void onAddToFavorite(Song song, SwipeLayout layout) {
-
-    }
-
-    @Override
-    public void onRemoveFromFavorite(Song song, SwipeLayout layout) {
-
-    }
-
-    @Override
-    public void subcribeFavorite(Song song) {
-
-    }
-
-    @Override
     public void onOpenPlayMusic(Song song, String singer) {
-
+        BeeApplication.getInstant().startActivity(DisplaySongActivity.getIntent(song, singer));
     }
 }

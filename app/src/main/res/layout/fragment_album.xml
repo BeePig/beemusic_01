@@ -5,6 +5,7 @@
     <data>
 
         <import type="com.framgia.beemusic.util.LayoutManager"/>
+        <import type="android.view.View"/>
 
         <variable
             name="fragment"

@@ -67,6 +67,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             if (song == null) return;
             mBindingModel = new BindingModel(song, mSingerList.get(pos), pos, mPresenter);
             mBinding.setBindingModel(mBindingModel);
+            mBinding.setHolder(this);
             mBinding.executePendingBindings();
         }
 

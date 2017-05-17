@@ -31,6 +31,7 @@ public class SongSingerRepository extends DataHelper implements DataSourceRelati
         String selection = SongSingerSourceContract.SongSingerEntry.COLUMN_ID_SONG + " = ?";
         List<Integer> idSingers = new ArrayList<>();
         int idSinger;
+        openDatabase();
         Cursor cursor = getCursor(selection, new String[] { String.valueOf(idSong) });
         if (cursor == null || cursor.getCount() == 0) return null;
         while (cursor.moveToNext()) {

@@ -131,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_teal_100"
+            android:background="@color/color_grey_100"
             bind:adapter="@{activity.adapter}"
             bind:layoutManager="@{LayoutManager.linear()}"
             />

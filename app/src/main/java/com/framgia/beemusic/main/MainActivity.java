@@ -80,7 +80,6 @@ public class MainActivity extends BaseActivity
         }
         if (!ActivityUtils.isInstalled(this)) {
             mPresenter.subcribe();
-            return;
         }
         startObserverService();
         initSongFragment();

@@ -48,7 +48,12 @@
             android:name=".album.addtoalbum.ChooseAlbumActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".singeritems.SingerItemsActivity">
+        <activity
+            android:name=".singeritems.SingerItemsActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
         </activity>
     </application>
 

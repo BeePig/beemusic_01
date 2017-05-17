@@ -83,10 +83,10 @@ public class SongPresenter implements SongContract.Presenter {
         if (song == null) return;
         int idSong = song.getId();
         mSongHandler.delete(idSong);
-        mSongAlbumHandler.delete(idSong);
-        mSongSingerHandler.delete(idSong);
         mAlbumHandler.updateCountForDelSong(mSongAlbumHandler.getListId(idSong));
         mSingerHandler.updateCountByDelSong(mSongSingerHandler.getListId(idSong));
+        mSongAlbumHandler.delete(idSong);
+        mSongSingerHandler.delete(idSong);
     }
 
     @Override

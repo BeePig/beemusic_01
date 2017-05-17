@@ -10,6 +10,10 @@
             name="bindingModel"
             type="com.framgia.beemusic.song.SongAdapter.SongViewHolder.BindingModel"
             />
+        <variable
+            name="holder"
+            type="com.framgia.beemusic.song.SongAdapter.SongViewHolder"
+            />
 
     </data>
 
@@ -68,7 +72,7 @@
                 android:id="@+id/image_view_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->bindingModel.bindPresenter.onDeleteSong(bindingModel.song,bindingModel.position)}"
+                android:onClick="@{()->bindingModel.bindPresenter.onDeleteSong(bindingModel.song,holder.getAdapterPosition())}"
                 android:paddingRight="@dimen/dp_50"
                 android:src="@drawable/ic_delete"
                 />

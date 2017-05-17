@@ -2,11 +2,12 @@ package com.framgia.beemusic.data.model;
 
 import android.database.Cursor;
 import com.framgia.beemusic.data.source.local.album.AlbumSourceContract;
+import java.io.Serializable;
 
 /**
  * Created by beepi on 17/02/2017.
  */
-public class Album {
+public class Album implements Serializable{
     private int mId = -1;
     private String mName;
     private String mImageLink;

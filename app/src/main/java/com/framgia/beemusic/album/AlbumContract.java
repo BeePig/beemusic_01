@@ -30,6 +30,6 @@ public interface AlbumContract {
 
         void onDeleteAlbum(Album album, int pos);
 
-        void onOpenSongDetail(AlbumAdapter.AlbumViewHolder holder);
+        void onOpenDetail(AlbumAdapter.AlbumViewHolder holder);
     }
 }

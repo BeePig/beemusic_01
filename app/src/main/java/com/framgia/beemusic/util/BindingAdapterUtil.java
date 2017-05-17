@@ -27,6 +27,7 @@ import com.framgia.beemusic.R;
 import com.framgia.beemusic.album.AlbumAdapter;
 import com.framgia.beemusic.album.addtoalbum.ChooseAlbumActivity;
 import com.framgia.beemusic.album.createalbum.CreatedAlbumActivity;
+import com.framgia.beemusic.albumitems.AlbumItemsActivity;
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.displaysong.DisplaySongActivity;
 import com.framgia.beemusic.main.MainActivity;
@@ -69,7 +70,7 @@ public class BindingAdapterUtil {
             actionBar.setDisplayHomeAsUpEnabled(true);
             return;
         }
-        if (activity instanceof SingerItemsActivity) {
+        if (activity instanceof SingerItemsActivity || activity instanceof AlbumItemsActivity) {
             activity.setSupportActionBar(toolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar == null) return;

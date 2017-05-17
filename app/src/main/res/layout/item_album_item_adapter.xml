@@ -8,11 +8,11 @@
 
         <variable
             name="holder"
-            type="com.framgia.beemusic.singeritems.SingerItemsAdapter.ViewHolder"
+            type="com.framgia.beemusic.albumitems.AlbumItemsAdapter.ViewHolder"
             />
         <variable
             name="presenter"
-            type="com.framgia.beemusic.singeritems.SingerItemsContract.Presenter"
+            type="com.framgia.beemusic.albumitems.AlbumItemsContract.Presenter"
             />
 
     </data>
@@ -23,27 +23,54 @@
         android:layout_height="wrap_content"
         >
 
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50"
-            android:background="@color/color_grey_100"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:onClick="@{()->presenter.onOpenPlayMusic(holder.song)}"
-            android:paddingLeft="@dimen/dp_10"
-            android:text="@{holder.song.name}"
-            android:textColor="@color/color_black"
-            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
+            android:background="@color/color_grey_100"
+            android:onClick="@{()->presenter.onOpenPlayMusic(holder.song,holder.singer)}"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/text_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="@{holder.song.name}"
+                android:textColor="@color/color_black"
+                />
+            <TextView
+                android:id="@+id/textview_artist"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_10"
+                android:text="@{holder.singer}"
+                android:textColor="@color/color_red_500"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/color_white"
             android:gravity="center|end"
-            android:onClick="@{()->presenter.onOpenPlayMusic(holder.song)}"
+            android:onClick="@{()->presenter.onOpenPlayMusic(holder.song,holder.singer)}"
             android:orientation="horizontal"
             app:clamp="parent"
             app:gravity="left"
             >
+            <ImageView
+                android:id="@+id/image_view_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_30"
+                android:onClick="@{()->presenter.onDeleteSong(holder.song,holder.getAdapterPosition())}"
+                android:src="@drawable/ic_delete"
+                />
 
             <ImageView
                 android:id="@+id/image_view_album"

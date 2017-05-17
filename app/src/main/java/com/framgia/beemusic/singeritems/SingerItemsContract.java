@@ -12,6 +12,8 @@ import ru.rambler.libs.swipe_layout.SwipeLayout;
 public interface SingerItemsContract {
     interface View {
         void initRecycleView(List<Song> songs);
+
+        void onOpenPlayMusic(Song song);
     }
 
     interface Presenter extends BasePresenter {
@@ -25,6 +27,6 @@ public interface SingerItemsContract {
 
         void subcribeFavorite(Song song);
 
-        void onOpenPlayMusic(Song song, String singer);
+        void onOpenPlayMusic(Song song);
     }
 }

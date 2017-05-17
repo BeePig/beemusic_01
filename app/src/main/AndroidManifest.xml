@@ -48,6 +48,8 @@
             android:name=".album.addtoalbum.ChooseAlbumActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".singeritems.SingerItemsActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,68 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="holder"
+            type="com.framgia.beemusic.singeritems.SingerItemsAdapter.ViewHolder"
+            />
+        <variable
+            name="presenter"
+            type="com.framgia.beemusic.singeritems.SingerItemsContract.Presenter"
+            />
+
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dp_20"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_20"
+            >
+            <TextView
+                android:id="@+id/text_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:text="@{holder.song.name}"
+                android:textColor="@color/color_black"
+                />
+            <ImageView
+                android:id="@+id/image_view_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_30"
+                android:src="@drawable/ic_music_album"
+                />
+
+            <ImageView
+                android:id="@+id/image_view_non_favarite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:src="@drawable/ic_is_non_favorite"
+                android:visibility="@{holder.song.isFavorite ? View.GONE : View.VISIBLE}"
+                />
+
+            <ImageView
+                android:id="@+id/image_view_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_is_favorite"
+                android:visibility="@{holder.song.isFavorite ? View.VISIBLE : View.GONE}"
+                />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>

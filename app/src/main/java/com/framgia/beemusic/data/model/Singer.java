@@ -2,11 +2,12 @@ package com.framgia.beemusic.data.model;
 
 import android.database.Cursor;
 import com.framgia.beemusic.data.source.local.singer.SingerSourceContract;
+import java.io.Serializable;
 
 /**
  * Created by beepi on 17/02/2017.
  */
-public class Singer {
+public class Singer implements Serializable {
     private int mId = -1;
     private String mName;
     private int mCount;

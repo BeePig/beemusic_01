@@ -33,4 +33,6 @@
     <string name="action_remove_succesfully">remove successfully</string>
     <string name="msg_successfull_add_album">Add to album sucessfully</string>
     <string name="msg_eror_add_album">Have some error during add to album, please try again !!!</string>
+    <string name="title_singers">Singer:</string>
+    <string name="title_singer_items">Singer Items</string>
 </resources>

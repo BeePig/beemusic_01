@@ -15,6 +15,6 @@ public interface SingerContract {
     }
 
     interface Presenter extends BaseFragmentPresenter {
-
+        void onOpenSingerItems(Singer singer);
     }
 }

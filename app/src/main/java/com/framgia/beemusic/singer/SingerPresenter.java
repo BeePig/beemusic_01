@@ -1,8 +1,10 @@
 package com.framgia.beemusic.singer;
 
+import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.data.model.Singer;
 import com.framgia.beemusic.data.source.SingerDataSource;
 import com.framgia.beemusic.data.source.local.singer.SingerSourceContract;
+import com.framgia.beemusic.singeritems.SingerItemsActivity;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Subscriber;
@@ -86,5 +88,10 @@ public class SingerPresenter implements SingerContract.Presenter {
                     }
                 });
         mSubscription.add(subscription);
+    }
+
+    @Override
+    public void onOpenSingerItems(Singer singer) {
+        BeeApplication.getInstant().startActivity(SingerItemsActivity.getIntent(singer));
     }
 }

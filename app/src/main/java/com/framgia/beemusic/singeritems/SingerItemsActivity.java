@@ -14,6 +14,7 @@ import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.SongRepository;
 import com.framgia.beemusic.data.source.SongSingerRepository;
 import com.framgia.beemusic.databinding.ActivitySingerItemsBinding;
+import com.framgia.beemusic.displaysong.DisplaySongActivity;
 import java.util.List;
 
 public class SingerItemsActivity extends AppCompatActivity
@@ -60,6 +61,12 @@ public class SingerItemsActivity extends AppCompatActivity
     @Override
     public void initRecycleView(List<Song> songs) {
         mAdapter.set(new SingerItemsAdapter(songs, mPresenter));
+    }
+
+    @Override
+    public void onOpenPlayMusic(Song song) {
+        if (song == null) return;
+        startActivity(DisplaySongActivity.getIntent(song, mSinger.getName()));
     }
 
     @Override

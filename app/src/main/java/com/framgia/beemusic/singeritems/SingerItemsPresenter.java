@@ -1,5 +1,7 @@
 package com.framgia.beemusic.singeritems;
 
+import com.framgia.beemusic.BeeApplication;
+import com.framgia.beemusic.album.addtoalbum.ChooseAlbumActivity;
 import com.framgia.beemusic.data.model.Song;
 import com.framgia.beemusic.data.source.DataSourceRelationship;
 import com.framgia.beemusic.data.source.SongDataSource;
@@ -7,6 +9,7 @@ import com.framgia.beemusic.data.source.local.song.SongSourceContract;
 import java.util.ArrayList;
 import java.util.List;
 import ru.rambler.libs.swipe_layout.SwipeLayout;
+import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
@@ -77,26 +80,49 @@ public class SingerItemsPresenter implements SingerItemsContract.Presenter {
 
     @Override
     public void onAddToAlbum(Song song, SwipeLayout layout) {
-
+        BeeApplication.getInstant().startActivity(ChooseAlbumActivity.getIntent(song));
+        layout.animateReset();
     }
 
     @Override
     public void onAddToFavorite(Song song, SwipeLayout layout) {
-
+        song.setIsFavorite(Song.IS_FAVORITE);
+        subcribeFavorite(song);
+        layout.animateReset();
     }
 
     @Override
     public void onRemoveFromFavorite(Song song, SwipeLayout layout) {
-
+        song.setIsFavorite(Song.IS_NON_FAVORITE);
+        subcribeFavorite(song);
+        layout.animateReset();
     }
 
     @Override
     public void subcribeFavorite(Song song) {
+        Subscription subscription = Observable.just(song)
+                .observeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Song>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Song song) {
+                        mSongRepository.update(song);
+                    }
+                });
+        mSubscriptions.add(subscription);
     }
 
     @Override
-    public void onOpenPlayMusic(Song song, String singer) {
-
+    public void onOpenPlayMusic(Song song) {
+        mView.onOpenPlayMusic(song);
     }
 }

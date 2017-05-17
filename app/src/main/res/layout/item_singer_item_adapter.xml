@@ -1,4 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
     <data>
@@ -16,53 +17,72 @@
 
     </data>
 
-    <android.support.v7.widget.CardView
+    <ru.rambler.libs.swipe_layout.SwipeLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/dp_20"
-            android:paddingLeft="@dimen/dp_10"
-            android:paddingRight="@dimen/dp_10"
-            android:paddingTop="@dimen/dp_20"
+            android:layout_height="@dimen/dp_50"
+            android:onClick="@{()->presenter.onOpenPlayMusic(holder.song)}"
             >
             <TextView
                 android:id="@+id/text_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_teal_100"
                 android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_10"
                 android:text="@{holder.song.name}"
                 android:textColor="@color/color_black"
                 />
-            <ImageView
-                android:id="@+id/image_view_album"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_30"
-                android:src="@drawable/ic_music_album"
-                />
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:onClick="@{()->presenter.onOpenPlayMusic(holder.song)}"
+            app:clamp="parent"
+            app:gravity="left"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|end"
+                android:orientation="horizontal"
+                >
 
-            <ImageView
-                android:id="@+id/image_view_non_favarite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_10"
-                android:src="@drawable/ic_is_non_favorite"
-                android:visibility="@{holder.song.isFavorite ? View.GONE : View.VISIBLE}"
-                />
+                <ImageView
+                    android:id="@+id/image_view_album"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_30"
+                    android:onClick="@{()->presenter.onAddToAlbum(holder.song,swipeLayout)}"
+                    android:src="@drawable/ic_music_album"
+                    />
 
-            <ImageView
-                android:id="@+id/image_view_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_is_favorite"
-                android:visibility="@{holder.song.isFavorite ? View.VISIBLE : View.GONE}"
-                />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+                <ImageView
+                    android:id="@+id/image_view_non_favarite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:onClick="@{()->presenter.onAddToFavorite(holder.song,swipeLayout)}"
+                    android:src="@drawable/ic_is_non_favorite"
+                    android:visibility="@{holder.song.isFavorite ? View.GONE : View.VISIBLE}"
+                    />
+
+                <ImageView
+                    android:id="@+id/image_view_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:onClick="@{()->presenter.onRemoveFromFavorite(holder.song,swipeLayout)}"
+                    android:src="@drawable/ic_is_favorite"
+                    android:visibility="@{holder.song.isFavorite ? View.VISIBLE : View.GONE}"
+                    />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </ru.rambler.libs.swipe_layout.SwipeLayout>
+
 </layout>

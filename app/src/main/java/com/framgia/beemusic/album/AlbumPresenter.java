@@ -1,6 +1,8 @@
 package com.framgia.beemusic.album;
 
 import android.support.annotation.NonNull;
+import com.framgia.beemusic.BeeApplication;
+import com.framgia.beemusic.albumitems.AlbumItemsActivity;
 import com.framgia.beemusic.data.model.Album;
 import com.framgia.beemusic.data.model.Singer;
 import com.framgia.beemusic.data.model.Song;
@@ -57,9 +59,13 @@ public class AlbumPresenter implements AlbumContract.Presenter {
     }
 
     @Override
-    public void onOpenSongDetail(AlbumAdapter.AlbumViewHolder holder) {
+    public void onOpenDetail(AlbumAdapter.AlbumViewHolder holder) {
         if (holder == null) return;
-        if (!holder.isTransparent.get()) return; // todo open detail play music
+        if (!holder.isTransparent.get()) {
+            BeeApplication.getInstant()
+                    .startActivity(AlbumItemsActivity.getIntent(holder.getAlbum()));
+            return;
+        }
         holder.isTransparent.set(false);
     }
 

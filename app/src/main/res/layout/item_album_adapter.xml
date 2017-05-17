@@ -41,7 +41,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/dp_7"
             android:gravity="center"
-            android:onClick="@{()->presenter.onOpenSongDetail(holder)}"
+            android:onClick="@{()->presenter.onOpenDetail(holder)}"
             android:orientation="vertical"
             bind:holder="@{holder}"
             bind:touchListener="@{listener}"

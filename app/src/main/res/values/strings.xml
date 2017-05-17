@@ -35,4 +35,6 @@
     <string name="msg_eror_add_album">Have some error during add to album, please try again !!!</string>
     <string name="title_singers">Singer:</string>
     <string name="title_singer_items">Singer Items</string>
+    <string name="title_album_items">Album Items</string>
+    <string name="title_albums">Album:</string>
 </resources>

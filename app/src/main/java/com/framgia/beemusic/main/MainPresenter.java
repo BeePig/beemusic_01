@@ -1,9 +1,6 @@
 package com.framgia.beemusic.main;
 
 import android.database.Cursor;
-import com.framgia.beemusic.data.source.AlbumRepository;
-import com.framgia.beemusic.data.source.SingerRepository;
-import com.framgia.beemusic.data.source.SongRepository;
 import com.framgia.beemusic.data.source.SynchronizeRepository;
 import rx.Subscriber;
 import rx.Subscription;
@@ -15,21 +12,14 @@ import rx.subscriptions.CompositeSubscription;
  * Created by beepi on 20/02/2017.
  */
 public class MainPresenter implements MainContract.Presenter {
-    private SongRepository mSongRepository;
-    private SingerRepository mSingerRepository;
-    private AlbumRepository mAlbumRepository;
     private SynchronizeRepository mSynchronizeRepository;
     private MainContract.View mView;
     private CompositeSubscription mSubscription;
 
     public MainPresenter(MainContract.View view, CompositeSubscription subscription,
-            SongRepository songRepository, AlbumRepository albumRepository,
-            SingerRepository singerRepository, SynchronizeRepository synchronizeRepository) {
+            SynchronizeRepository synchronizeRepository) {
         mView = view;
         mSubscription = subscription;
-        mSongRepository = songRepository;
-        mAlbumRepository = albumRepository;
-        mSingerRepository = singerRepository;
         mSynchronizeRepository = synchronizeRepository;
     }
 

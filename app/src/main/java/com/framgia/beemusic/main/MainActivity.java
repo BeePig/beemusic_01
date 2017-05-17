@@ -119,8 +119,7 @@ public class MainActivity extends BaseActivity
 
     private void initPresenter() {
         mPresenter = new MainPresenter(this, new CompositeSubscription(),
-                SongRepository.getInstant(this), AlbumRepository.getInstant(this),
-                SingerRepository.getInstant(this), SynchronizeRepository.getInstant());
+                SynchronizeRepository.getInstant());
     }
 
     private void showNotLoadOnMediastore() {

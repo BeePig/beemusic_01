@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.MenuItem;
 import com.framgia.beemusic.BeeApplication;
 import com.framgia.beemusic.R;
@@ -15,7 +16,8 @@ import com.framgia.beemusic.data.source.SongSingerRepository;
 import com.framgia.beemusic.databinding.ActivitySingerItemsBinding;
 import java.util.List;
 
-public class SingerItemsActivity extends AppCompatActivity implements SingerItemsContract.View {
+public class SingerItemsActivity extends AppCompatActivity
+        implements SingerItemsContract.View, SearchView.OnQueryTextListener {
 
     private static final String EXTRA_SINGER = "EXTRA_SINGER";
     private ActivitySingerItemsBinding mBinding;
@@ -35,6 +37,7 @@ public class SingerItemsActivity extends AppCompatActivity implements SingerItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_singer_items);
+        mBinding.searchview.setOnQueryTextListener(this);
         mPresenter = new SingerItemsPresenter(this, SongRepository.getInstant(this),
                 SongSingerRepository.getInstant(this));
         getExtra();
@@ -89,5 +92,19 @@ public class SingerItemsActivity extends AppCompatActivity implements SingerItem
 
     public Singer getSinger() {
         return mSinger;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (mAdapter.get() == null) return false;
+        mAdapter.get().onSearch(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (mAdapter.get() == null) return false;
+        mAdapter.get().onSearch(newText);
+        return true;
     }
 }

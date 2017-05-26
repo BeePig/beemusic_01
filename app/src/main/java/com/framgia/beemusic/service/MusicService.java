@@ -306,9 +306,11 @@ public class MusicService extends Service
     }
 
     public void onPause() {
-        mMediaPlayer.pause();
-        mIsPlaying = false;
-        sendBroadcast(new Intent(ACTION_PAUSE));
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
+            mIsPlaying = false;
+            sendBroadcast(new Intent(ACTION_PAUSE));
+        }
         mNotificationManager.notify(NOTIFICATION_ID,
                 notifyNotification(R.drawable.ic_play, ACTION_RESUME));
         stopForeground(false);
@@ -382,18 +384,22 @@ public class MusicService extends Service
         nextPendingIntent = createPendingIntentService(ACTION_NEXT);
         previousPendingIntent = createPendingIntentService(ACTION_PREVIOUS);
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_bee);
-        Notification notification =
-                new NotificationCompat.Builder(this).setContentIntent(createPendingIntentAcivity())
-                        .setContentText(mSinger)
-                        .setContentTitle(mSong.getName())
-                        .setStyle(new NotificationCompat.MediaStyle())
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setLargeIcon(icon)
-                        .addAction(R.drawable.ic_previous, ACTION_PREVIOUS, previousPendingIntent)
-                        .addAction(drawable, ACTION_RESUME, notifyPendingIntent)
-                        .addAction(R.drawable.ic_next, ACTION_NEXT, nextPendingIntent)
-                        .setAutoCancel(action.equals(ACTION_RESUME))
-                        .build();
+        Notification notification;
+        NotificationCompat.Builder builder =
+                (NotificationCompat.Builder) new NotificationCompat.Builder(this).setContentIntent(
+                        createPendingIntentAcivity());
+        if (mSong != null && mSinger != null) {
+            builder.setContentText(mSinger).setContentTitle(mSong.getName());
+        }
+
+        notification = builder.setStyle(new NotificationCompat.MediaStyle())
+                .setSmallIcon(R.drawable.ic_notification)
+                .setLargeIcon(icon)
+                .addAction(R.drawable.ic_previous, ACTION_PREVIOUS, previousPendingIntent)
+                .addAction(drawable, ACTION_RESUME, notifyPendingIntent)
+                .addAction(R.drawable.ic_next, ACTION_NEXT, nextPendingIntent)
+                .setAutoCancel(action.equals(ACTION_RESUME))
+                .build();
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
         return notification;
     }

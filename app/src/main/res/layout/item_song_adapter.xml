@@ -21,7 +21,6 @@
         android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()->bindingModel.bindPresenter.onOpenPlayMusic(bindingModel.song,bindingModel.singer)}"
         >
 
         <LinearLayout

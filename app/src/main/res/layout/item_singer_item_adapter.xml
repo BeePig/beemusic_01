@@ -39,7 +39,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:gravity="center|end"
-            android:onClick="@{()->presenter.onOpenPlayMusic(holder.song)}"
             android:orientation="horizontal"
             app:clamp="parent"
             app:gravity="left"

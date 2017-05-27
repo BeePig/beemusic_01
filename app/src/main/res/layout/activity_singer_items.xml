@@ -26,7 +26,7 @@
             android:minHeight="?attr/actionBarSize"
             bind:activity="@{activity}"
             bind:color="@{@color/color_white}"
-            bind:title="@{@string/title_singer_items}"
+            bind:title="@{activity.singer.name}"
             style="@style/ActionBarToggle"
             />
 

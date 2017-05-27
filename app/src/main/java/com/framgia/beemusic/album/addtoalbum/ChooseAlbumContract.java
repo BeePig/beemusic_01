@@ -28,11 +28,6 @@ public interface ChooseAlbumContract {
     interface Presenter extends BasePresenter {
         void onCompleteAddToAlbum(Song song, List<Album> albums);
 
-        /**
-         * add to single album while choosing
-         *
-         * @param album: album choose
-         */
-        void onAddToAlbum(Album album);
+        void onAddToAlbum(ChooseAlbumAdapter.ViewHolder holder);
     }
 }

@@ -1,5 +1,6 @@
 package com.framgia.beemusic.album.addtoalbum;
 
+import android.databinding.ObservableField;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public class ChooseAlbumAdapter extends RecyclerView.Adapter<ChooseAlbumAdapter.
 
         private ItemChooseAlbumBinding mBinding;
         private Album mAlbum;
+        private ObservableField<Boolean> mIsChecked = new ObservableField<>(false);
 
         public ViewHolder(ItemChooseAlbumBinding binding) {
             super(binding.getRoot());
@@ -89,6 +91,10 @@ public class ChooseAlbumAdapter extends RecyclerView.Adapter<ChooseAlbumAdapter.
 
         public Album getAlbum() {
             return mAlbum;
+        }
+
+        public ObservableField<Boolean> getIsChecked() {
+            return mIsChecked;
         }
     }
 }

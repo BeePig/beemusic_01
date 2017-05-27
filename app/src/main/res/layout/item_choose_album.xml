@@ -39,6 +39,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="@dimen/dp_7"
             android:gravity="center"
+            android:onClick="@{()->presenter.onAddToAlbum(holder)}"
             android:orientation="vertical"
             bind:holder="@{holder}"
             bind:touchListener="@{listener}"
@@ -70,8 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|start"
-            android:onClick="@{()->presenter.onAddToAlbum(holder.album)}"
+            android:checked="@{holder.isChecked}"
+            android:onClick="@{()->presenter.onAddToAlbum(holder)}"
             />
-
     </android.support.v7.widget.CardView>
 </layout>

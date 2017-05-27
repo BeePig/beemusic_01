@@ -94,8 +94,13 @@ public class ChooseAlbumPresenter implements ChooseAlbumContract.Presenter {
     }
 
     @Override
-    public void onAddToAlbum(Album album) {
-        if (album == null) return;
-        mView.onAddToAlbum(album);
+    public void onAddToAlbum(ChooseAlbumAdapter.ViewHolder holder) {
+        if (holder.getAlbum() == null) return;
+        if (!holder.getIsChecked().get()) {
+            holder.getIsChecked().set(true);
+        } else {
+            holder.getIsChecked().set(false);
+        }
+        mView.onAddToAlbum(holder.getAlbum());
     }
 }

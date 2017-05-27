@@ -67,6 +67,7 @@ public class BindingAdapterUtil {
             activity.setSupportActionBar(toolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar == null) return;
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_left_arrow);
             actionBar.setDisplayHomeAsUpEnabled(true);
             return;
         }
@@ -74,6 +75,7 @@ public class BindingAdapterUtil {
             activity.setSupportActionBar(toolbar);
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar == null) return;
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_left_arrow);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }

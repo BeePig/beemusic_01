@@ -33,11 +33,12 @@
             android:onClick="@{()->presenter.onOpenPlayMusic(holder.song)}"
             android:paddingLeft="@dimen/dp_10"
             android:text="@{holder.song.name}"
-            android:textColor="@color/color_black"
+            android:textColor="@color/color_teal_900"
             />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
+            android:background="@color/color_white"
             android:gravity="center|end"
             android:orientation="horizontal"
             app:clamp="parent"
